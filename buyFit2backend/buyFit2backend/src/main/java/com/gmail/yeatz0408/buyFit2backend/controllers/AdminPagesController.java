@@ -23,7 +23,7 @@ import com.gmail.yeatz0408.buyFit2backend.repositories.PageRepository;
 
 @RestController
 @RequestMapping("/admin/pages")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AdminPagesController {
 
     @Autowired
