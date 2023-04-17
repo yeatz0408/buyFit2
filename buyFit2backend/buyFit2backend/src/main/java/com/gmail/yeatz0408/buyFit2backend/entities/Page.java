@@ -1,4 +1,4 @@
-package com.gmail.yeatz0408.buyFit2backend.entities;
+package com.gmail.yeatz0408.buyFit2Backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

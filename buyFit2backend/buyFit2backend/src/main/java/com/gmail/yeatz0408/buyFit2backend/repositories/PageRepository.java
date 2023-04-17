@@ -1,11 +1,11 @@
-package com.gmail.yeatz0408.buyFit2backend.repositories;
+package com.gmail.yeatz0408.buyFit2Backend.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.gmail.yeatz0408.buyFit2backend.entities.Page;
+import com.gmail.yeatz0408.buyFit2Backend.entities.Page;
 
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long> {

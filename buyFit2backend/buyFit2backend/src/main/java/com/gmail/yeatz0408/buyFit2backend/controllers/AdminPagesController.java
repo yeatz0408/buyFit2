@@ -1,4 +1,4 @@
-package com.gmail.yeatz0408.buyFit2backend.controllers;
+package com.gmail.yeatz0408.buyFit2Backend.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gmail.yeatz0408.buyFit2backend.entities.Page;
-import com.gmail.yeatz0408.buyFit2backend.repositories.PageRepository;
+import com.gmail.yeatz0408.buyFit2Backend.entities.Page;
+import com.gmail.yeatz0408.buyFit2Backend.repositories.PageRepository;
 
 @RestController
 @RequestMapping("/admin/pages")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins="*")
 public class AdminPagesController {
 
     @Autowired
@@ -37,8 +37,12 @@ public class AdminPagesController {
     }
 
     @PostMapping("/add")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     public Page add(@RequestBody Page page) {
+
+        System.out.println("\n\n" + page.getTitle() + page.getSlug() + page.getContent());
+
         return pageRepo.save(page);
     }
 
