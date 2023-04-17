@@ -1,2 +1,2 @@
 # buyFit2
-This is a small online store application. 
+This is a small online store for fitness. 
