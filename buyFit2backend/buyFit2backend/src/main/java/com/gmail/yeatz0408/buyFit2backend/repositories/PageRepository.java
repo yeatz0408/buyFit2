@@ -8,7 +8,7 @@ import com.gmail.yeatz0408.buyFit2backend.entities.Page;
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long> {
 
-    // Page findBySlug(String slug);
+    Page findBySlug(String slug);
 
     // Page findBySlugAndIdNot(Long id, String slug);
 
