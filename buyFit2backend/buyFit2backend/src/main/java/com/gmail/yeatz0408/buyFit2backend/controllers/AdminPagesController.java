@@ -40,7 +40,11 @@ public class AdminPagesController {
     @ResponseStatus(HttpStatus.CREATED)
     public Page add(@RequestBody Page page) {
 
-        System.out.println("\n\n" + page.getTitle() + page.getSlug() + page.getContent());
+        if (page.getSlug() == "" ) {
+            page.setSlug(page.getTitle().toLowerCase().replace(" ", "-"));
+        } else {
+            page.getSlug().toLowerCase().replace(" ", "-");
+        }        
 
         return pageRepo.save(page);
     }
@@ -55,6 +59,13 @@ public class AdminPagesController {
 
     @PutMapping("/edit/{id}")
     public Page put(@RequestBody Page page) {
+
+        if (page.getSlug() == "" ) {
+            page.setSlug(page.getTitle().toLowerCase().replace(" ", "-"));
+        } else {
+            page.getSlug().toLowerCase().replace(" ", "-");
+        }
+
         return pageRepo.save(page);
     }
 

@@ -12,6 +12,8 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
     Optional<Page> findBySlug(String slug);
 
+    Optional<Page> findByTitle(String title);
+
     // Page findBySlugAndIdNot(Long id, String slug);
 
     // List<Page> findAllByOrderBySortingAsc();
