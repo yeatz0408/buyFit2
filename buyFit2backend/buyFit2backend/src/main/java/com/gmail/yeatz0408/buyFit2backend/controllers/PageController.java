@@ -17,7 +17,7 @@ import com.gmail.yeatz0408.buyFit2Backend.repositories.PageRepository;
 
 @RestController
 @RequestMapping(path = "/pages")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PageController {
 
     @Autowired
