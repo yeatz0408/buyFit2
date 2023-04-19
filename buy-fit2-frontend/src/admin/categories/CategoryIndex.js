@@ -6,21 +6,20 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Index() {
 
-    const [pages, setPages] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        loadPages();
+        loadCategories();
     }, []);
 
-    const loadPages = async () => {
-        const result = await axios.get("http://localhost:8080/admin/pages")
-        setPages(result.data);
+    const loadCategories = async () => {
+        const result = await axios.get("http://localhost:8080/admin/categories")
+        setCategories(result.data);
     };
 
-    const deletePage = async (id) => {
-
-        await axios.delete(`http://localhost:8080/admin/pages/delete/${id}`);
-        loadPages();
+    const deleteCategory = async (id) => {
+        await axios.delete(`http://localhost:8080/admin/categories/delete/${id}`);
+        loadCategories();
     }
 
     const submitDelete = (id) => {
@@ -29,7 +28,7 @@ export default function Index() {
             buttons: [
               {
                 label: 'はい',
-                onClick: () => deletePage(id)
+                onClick: () => deleteCategory(id)
               },
               {
                 label: 'いいえ',
@@ -41,33 +40,30 @@ export default function Index() {
     return (
         <div className="container">
             <h1 className="display-2">ページ</h1>
-            <a href="/admin/pages/add" className="btn btn-primary mb-5">追加</a>
+            <a href="/admin/categories/add" className="btn btn-primary mb-5">追加</a>
 
-            {pages.length == 0 &&
-                <h4>ページを追加してください。</h4>
+            {categories.length == 0 &&
+                <h4>カテゴリーを追加してください。</h4>
             }
 
             <div>
                 <table className="table">
                     <tr>
-                        <th>タイトル</th>
-                        <th>スラグ</th>
+                        <th>カテゴリー名</th>
                         <th></th>
                     </tr>
                     {
-                        pages.map((page, index) => (
-                            <tr key={page.id}>
-                                <td>{page.title}</td>
-                                <td>{page.slug}</td>
+                        categories.map((category, index) => (
+                            <tr key={category.id}>
+                                <td>{category.name}</td>
                                 <td><Link
-                                    to={`/admin/pages/edit/${page.id}`}
+                                    to={`/admin/categories/edit/${category.id}`}
                                     className="btn btn-outline-primary mx-2">変更</Link></td>
                                 <button
                                     className="btn btn-danger mx-2"
-                                    onClick={() => submitDelete(page.id)}
+                                    onClick={() => submitDelete(category.id)}
                                 >削除</button>
                             </tr>
-
                         ))
                     }
                 </table>

@@ -2,9 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Navbar from './components/Navbar';
-import Index from './admin/pages/Index';
-import Add from './admin/pages/Add'
-import Edit from './admin/pages/Edit'
+import PageIndex from './admin/pages/PageIndex';
+import PageAdd from './admin/pages/PageAdd'
+import PageEdit from './admin/pages/PageEdit'
+import CategoryIndex from './admin/categories/CategoryIndex'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -14,11 +15,11 @@ function App() {
         <Navbar />
         <Routes>
 
-          <Route exact path="/admin/pages" element={<Index/>}/>
-          <Route exact path="/admin/pages/add" element={<Add/>}/>
-          <Route exact path="/admin/pages/edit/:id" element={<Edit/>}/>
+          <Route exact path="/admin/pages" element={<PageIndex/>}/>
+          <Route exact path="/admin/pages/add" element={<PageAdd/>}/>
+          <Route exact path="/admin/pages/edit/:id" element={<PageEdit/>}/>
 
-
+          <Route exact path="/admin/categories" element={<CategoryIndex/>}/>
 
         </Routes>
 
