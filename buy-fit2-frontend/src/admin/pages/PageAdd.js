@@ -35,7 +35,6 @@ export default function Add() {
         <div className="container">
             <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                 <h1 className="text-center m-4">ページ追加</h1>
-                <a href="/admin/pages" className="btn btn-primary mb-5">前のページへ</a>
 
                 <form onSubmit={handleSubmit((e) => onSubmit(e))}>
 

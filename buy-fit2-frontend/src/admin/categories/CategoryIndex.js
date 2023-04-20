@@ -39,7 +39,7 @@ export default function Index() {
 
     return (
         <div className="container">
-            <h1 className="display-2">ページ</h1>
+            <h1 className="display-2">カテゴリー</h1>
             <a href="/admin/categories/add" className="btn btn-primary mb-5">追加</a>
 
             {categories.length == 0 &&
