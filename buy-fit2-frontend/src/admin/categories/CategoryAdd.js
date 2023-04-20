@@ -8,12 +8,11 @@ export default function Add() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [category, setCategory] = useState({
-        title: "",
+        catName: "",
         slug: "",
-        content: ""
     })
 
-    const { name, slug } = category;
+    const { catName, slug } = category;
 
     const onInputChange = (e) => {
         setCategory({ ...category, [e.target.name]: e.target.value });
@@ -25,7 +24,7 @@ export default function Add() {
 
         await axios.post("http://localhost:8080/admin/categories/add", category);
         setCategory({
-            name: "",
+            catName: "",
             slug: "",
         });
     }
@@ -38,17 +37,17 @@ export default function Add() {
                 <form onSubmit={handleSubmit((e) => onSubmit(e))}>
 
                     <div className="form-group">
-                        <label htmlFor="name" className="form-label">カテゴリー名</label>
-                        <input name="name" type="text" className="form-control"
-                            placeholder="カテゴリー名" value={name} 
-                            {...register('name', { required: true, minLength: 2, maxLength: 30 })}
+                        <label htmlFor="catName" className="form-label">カテゴリー名</label>
+                        <input name="catName" type="text" className="form-control"
+                            placeholder="カテゴリー名" value={catName} 
+                            {...register('catName', { required: true, minLength: 2, maxLength: 30 })}
                             onChange={(e) => onInputChange(e)}
                         ></input>
-                        {errors.name && errors.name.type === "required" &&
+                        {errors.catName && errors.catName.type === "required" &&
                             <span className="panel-footer text-danger">カテゴリー名を入力ください</span>}
-                        {errors.name && errors.name.type === "minLength" &&
+                        {errors.catName && errors.catName.type === "minLength" &&
                             <span className="panel-footer text-danger">２文字以上でお願いします</span>}
-                        {errors.name && errors.name.type === "maxLength" &&
+                        {errors.catName && errors.catName.type === "maxLength" &&
                             <span className="panel-footer text-danger">30文字以下でお願いします</span>}
                     </div>
 

@@ -55,7 +55,7 @@ export default function Index() {
                     {
                         categories.map((category, index) => (
                             <tr key={category.id}>
-                                <td>{category.name}</td>
+                                <td>{category.catName}</td>
                                 <td><Link
                                     to={`/admin/categories/edit/${category.id}`}
                                     className="btn btn-outline-primary mx-2">変更</Link></td>

@@ -42,7 +42,7 @@ public class AdminCategoriesController {
     @ResponseStatus(HttpStatus.CREATED)
     public Category add(@RequestBody Category category) {
 
-        category.setSlug(category.getName().toLowerCase().replace(" ","-"));
+        category.setSlug(category.getCatName().toLowerCase().replace(" ","-"));
 
         return categoryRepository.save(category);
     }
@@ -56,7 +56,7 @@ public class AdminCategoriesController {
     @PutMapping("/edit/{id}")
     public Category put(@RequestBody Category category) {
 
-        category.setSlug(category.getName().toLowerCase().replace(" ","-"));
+        category.setSlug(category.getCatName().toLowerCase().replace(" ","-"));
 
         return categoryRepository.save(category);
     }

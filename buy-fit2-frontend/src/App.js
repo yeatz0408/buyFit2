@@ -7,6 +7,7 @@ import PageAdd from './admin/pages/PageAdd'
 import PageEdit from './admin/pages/PageEdit'
 import CategoryIndex from './admin/categories/CategoryIndex'
 import CategoryAdd from './admin/categories/CategoryAdd'
+import CategoryEdit from './admin/categories/CategoryEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
           <Route exact path="/admin/categories" element={<CategoryIndex/>}/>
           <Route exact path="/admin/categories/add" element={<CategoryAdd/>}/>
+          <Route exact path="/admin/categories/edit/:id" element={<CategoryEdit/>}/>
 
         </Routes>
 

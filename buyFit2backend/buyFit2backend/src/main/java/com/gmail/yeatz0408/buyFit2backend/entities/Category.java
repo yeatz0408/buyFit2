@@ -23,7 +23,7 @@ public class Category {
 
     @Column
     @Size(min=2)
-    private String name;
+    private String catName;
 
     @Column
     private String slug;
