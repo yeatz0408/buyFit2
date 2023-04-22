@@ -1,5 +1,9 @@
 package com.gmail.yeatz0408.buyFit2Backend.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gmail.yeatz0408.buyFit2Backend.Exceptions.DataNotFoundException;
 import com.gmail.yeatz0408.buyFit2Backend.entities.Product;
@@ -41,15 +47,31 @@ public class AdminProductsController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product add(@RequestBody Product product) {
+    public Product add(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
 
-        if (product.getSlug() == "" ) {
+        Product slugExists = productRepo.findBySlug(product.getSlug())
+                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
+
+        boolean fileOk = false;
+        byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/media/" + filename);
+
+        if ( filename.endsWith("jpg") || filename.endsWith("png") ) {
+            fileOk = true;
+        }
+
+        if ( fileOk && slugExists != null ) {
+
             product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
-        } else {
-            product.getSlug().toLowerCase().replace(" ", "-");
-        }        
+            product.setImage(filename);
 
-        return productRepo.save(product);
+            Files.write(path, bytes);
+
+            return productRepo.save(product);    
+        }
+
+        return null;
     }
 
     @GetMapping("/edit/{id}")
@@ -59,15 +81,42 @@ public class AdminProductsController {
     }
 
     @PutMapping("/edit/{id}")
-    public Product put(@RequestBody Product product) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product edit(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
 
-        if (product.getSlug() == "" ) {
-            product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
+        Product currentProduct = productRepo.findById(product.getId())
+                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
+
+        Product slugExists = productRepo.findBySlug(product.getSlug())
+                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
+
+        boolean fileOk = false;
+        byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/media/" + filename);
+
+        if ( !file.isEmpty() ) {
+            if ( filename.endsWith("jpg") ) {
+                fileOk = true;
+            }
         } else {
-            product.getSlug().toLowerCase().replace(" ", "-");
+            fileOk = true;
         }
 
-        return productRepo.save(product);
+        if ( fileOk && slugExists != null ) {
+
+            Path paths2 = Paths.get("src/main/resources/static/media/" + currentProduct.getImage());
+            Files.delete(paths2);
+
+            product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
+            product.setImage(filename);
+
+            Files.write(path, bytes);
+
+            return productRepo.save(product);    
+        }
+
+        return null;
     }
 
     @DeleteMapping("/delete/{id}")
