@@ -57,7 +57,7 @@ public class AdminProductsController {
         String filename = file.getOriginalFilename();
         Path path = Paths.get("src/main/resources/static/media/" + filename);
 
-        if ( filename.endsWith("jpg") || filename.endsWith("png") ) {
+        if ( filename.endsWith("jpg") || filename.endsWith("jpeg") ) {
             fileOk = true;
         }
 

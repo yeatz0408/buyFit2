@@ -6,20 +6,20 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Index() {
 
-    const [pages, setPages] = useState([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        loadPages();
+        loadProducts();
     }, []);
 
-    const loadPages = async () => {
-        const result = await axios.get("http://localhost:8080/admin/pages")
-        setPages(result.data);
+    const loadProducts = async () => {
+        const result = await axios.get("http://localhost:8080/admin/products")
+        setProducts(result.data);
     };
 
-    const deletePage = async (id) => {
-        await axios.delete(`http://localhost:8080/admin/pages/delete/${id}`);
-        loadPages();
+    const deleteProducts = async (id) => {
+        await axios.delete(`http://localhost:8080/admin/products/delete/${id}`);
+        loadProducts();
     }
 
     const submitDelete = (id) => {
@@ -28,7 +28,7 @@ export default function Index() {
             buttons: [
               {
                 label: 'はい',
-                onClick: () => deletePage(id)
+                onClick: () => deleteProducts(id)
               },
               {
                 label: 'いいえ',
@@ -39,31 +39,35 @@ export default function Index() {
 
     return (
         <div className="container">
-            <h1 className="display-2">ページ</h1>
-            <a href="/admin/pages/add" className="btn btn-primary mb-5">追加</a>
+            <h1 className="display-2">商品</h1>
+            <a href="/admin/products/add" className="btn btn-primary mb-5">追加</a>
 
-            {pages.length == 0 &&
-                <h4>ページを追加してください。</h4>
+            {products.length == 0 &&
+                <h4>商品を追加してください。</h4>
             }
 
             <div>
                 <table className="table">
                     <tr>
-                        <th>タイトル</th>
-                        <th>スラグ</th>
-                        <th></th>
+                        <th>商品名</th>
+                        <th>イメージ</th>
+                        <th>カテゴリー</th>
+                        <th>価格</th>
+                        <th>変更</th>
+                        <th>削除</th>
                     </tr>
                     {
-                        pages.map((page, index) => (
-                            <tr key={page.id}>
-                                <td>{page.title}</td>
-                                <td>{page.slug}</td>
+                        products.map((product, index) => (
+                            <tr key={product.id}>
+                                <td>{product.productName}</td>
+                                <td>{product.image}</td>
+                                <td>{product.price}</td>
                                 <td><Link
-                                    to={`/admin/pages/edit/${page.id}`}
+                                    to={`/admin/products/edit/${product.id}`}
                                     className="btn btn-outline-primary mx-2">変更</Link></td>
                                 <button
                                     className="btn btn-danger mx-2"
-                                    onClick={() => submitDelete(page.id)}
+                                    onClick={() => submitDelete(product.id)}
                                 >削除</button>
                             </tr>
                         ))

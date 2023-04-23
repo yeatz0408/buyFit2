@@ -8,6 +8,8 @@ import PageEdit from './admin/pages/PageEdit'
 import CategoryIndex from './admin/categories/CategoryIndex'
 import CategoryAdd from './admin/categories/CategoryAdd'
 import CategoryEdit from './admin/categories/CategoryEdit'
+import ProductIndex from './admin/products/ProductIndex'
+import ProductAdd from './admin/products/ProductAdd'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -24,6 +26,9 @@ function App() {
           <Route exact path="/admin/categories" element={<CategoryIndex/>}/>
           <Route exact path="/admin/categories/add" element={<CategoryAdd/>}/>
           <Route exact path="/admin/categories/edit/:id" element={<CategoryEdit/>}/>
+
+          <Route exact path="/admin/products" element={<ProductIndex/>}/>
+          <Route exact path="/admin/products/add" element={<ProductAdd/>}/>
 
         </Routes>
 
