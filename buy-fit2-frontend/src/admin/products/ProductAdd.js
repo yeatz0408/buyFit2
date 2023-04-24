@@ -10,9 +10,8 @@ export default function Add() {
     const [product, setProduct] = useState({
         productName: "",
         description: "",
-        image: "",
         price: "",
-        category: ""
+        categoryId: ""
     })
 
     const { productName, description, price, categoryId } = product;

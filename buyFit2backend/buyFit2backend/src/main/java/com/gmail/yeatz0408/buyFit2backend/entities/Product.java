@@ -28,7 +28,7 @@ public class Product {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "[1-9]", message="カテゴリーを選んでください。")
+    //@Pattern(regexp = "[1-9]", message="カテゴリーを選んでください。")
     @Column(name="category_id")
     private Long categoryId;
 
@@ -36,18 +36,18 @@ public class Product {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    @Size(min=5, message = "5文字以上入力してください。")
+    //@Size(min=5, message = "5文字以上入力してください。")
     @Column(name="description")
     private String description;
 
     @Column(name="image")
     private String image;
 
-    @Size(min=2, message = "2文字以上入力してください。")
+    //@Size(min=2, message = "2文字以上入力してください。")
     @Column(name="productName")
     private String productName;
 
-    @Min(1)
+    //@Min(1)
     @Column(name="price")
     private int price;
 
@@ -57,6 +57,5 @@ public class Product {
     @Column(name="updated_at")
     @UpdateTimestamp
     private LocalDateTime updated_at;
-
     
 }

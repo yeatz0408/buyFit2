@@ -13,7 +13,7 @@ export default function Index() {
     }, []);
 
     const loadProducts = async () => {
-        const result = await axios.get("http://localhost:8080/admin/products")
+        const result = await axios.get("http://localhost:8080/admin/products");
         setProducts(result.data);
     };
 

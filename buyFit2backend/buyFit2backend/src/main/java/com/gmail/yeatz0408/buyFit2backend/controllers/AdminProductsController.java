@@ -49,6 +49,8 @@ public class AdminProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
 
+        System.out.println(product.getProductName() + product.getPrice() + product.getDescription());
+
         Product slugExists = productRepo.findBySlug(product.getSlug())
                             .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
 
@@ -129,4 +131,17 @@ public class AdminProductsController {
             
         }
     }
+
+    @PostMapping("/add2")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product add2(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
+
+        byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/media/" + filename);
+        Files.write(path, bytes);
+
+        return null;
+    }
+
 }
