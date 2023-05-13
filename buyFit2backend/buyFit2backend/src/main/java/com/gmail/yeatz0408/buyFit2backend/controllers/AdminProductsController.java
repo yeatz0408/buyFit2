@@ -47,9 +47,9 @@ public class AdminProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product) throws IOException {
 
-        //String slug = product.getProductName().toLowerCase().replace(" ", "-");
+        String slug = product.getProductName().toLowerCase().replace(" ", "-");
 
-        //product.setSlug(slug);
+        product.setSlug(slug);
 
         return productRepo.save(product);
     }
@@ -61,36 +61,15 @@ public class AdminProductsController {
     }
 
     @PutMapping("/edit/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product edit(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
+    public Product put(@RequestBody Product product) {
 
-        Product currentProduct = productRepo.findById(product.getId())
-                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
-
-        Product slugExists = productRepo.findBySlug(product.getSlug())
-                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
-
-        boolean fileOk = false;
-        byte[] bytes = file.getBytes();
-        String filename = file.getOriginalFilename();
-
-        if ( !file.isEmpty() ) {
-            if ( filename.endsWith("jpg") ) {
-                fileOk = true;
-            }
-        } else {
-            fileOk = true;
-        }
-
-        if ( fileOk && slugExists != null ) {
-
+        if (product.getSlug() == "" || product.getSlug() == null) {
             product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
-            product.setImg(filename);
-
-            return productRepo.save(product);    
+        } else {
+            product.getSlug().toLowerCase().replace(" ", "-");
         }
 
-        return null;
+        return productRepo.save(product);
     }
 
     @DeleteMapping("/delete/{id}")

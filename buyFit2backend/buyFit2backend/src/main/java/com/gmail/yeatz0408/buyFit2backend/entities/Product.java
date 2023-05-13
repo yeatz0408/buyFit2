@@ -28,7 +28,7 @@ public class Product {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "[1-9]", message="カテゴリーを選んでください。")
+    //@Pattern(regexp = "[1-9]", message="カテゴリーを選んでください。")
     @Column(name="category_id")
     private Long categoryId;
 
