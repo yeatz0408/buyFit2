@@ -8,6 +8,9 @@ export default function Add() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
 
+    const [displayWarning, setDisplayWarning] = useState(false);
+    const [displaySuccess, setDisplaySuccess] = useState(false);
+
     const [product, setProduct] = useState({
         productName: "",
         description: "",
@@ -43,7 +46,7 @@ export default function Add() {
     function getBase64(file) {
         let reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = function() {
+        reader.onload = function () {
             setSelectedImage(reader.result);
         };
         reader.onerror = function (error) {
@@ -55,8 +58,7 @@ export default function Add() {
     const onSubmit = async (e) => {
 
         // e.preventDefault();
-
-        await axios.post("http://localhost:8080/admin/products/add", {...product, img: selectedImage});
+        await axios.post("http://localhost:8080/admin/products/add", { ...product, img: selectedImage });
 
         setProduct({
             productName: "",
@@ -65,6 +67,9 @@ export default function Add() {
             categoryId: "",
             img: ""
         });
+
+        alert("新しい商品が登録されました。");
+
     }
 
     return (
