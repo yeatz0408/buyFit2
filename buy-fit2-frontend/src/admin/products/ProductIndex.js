@@ -6,16 +6,31 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Index() {
 
+    // data from database
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    //pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [booksPerPage] = useState(5);
+    const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [search, setSearch] = useState('');
+    const [searchUrl, setSearchUrl] = useState('');
+    
 
     useEffect(() => {
         loadProducts();
         loadCats();
-    }, []);
+    }, [currentPage]);
 
     const loadProducts = async () => {
-        const result = await axios.get("http://localhost:8080/admin/products");
+
+        const baseUrl = "http://localhost:8080/admin/products";
+
+        let url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+
+        const result = await axios.get(url);
         setProducts(result.data);
     };
 
@@ -51,6 +66,13 @@ export default function Index() {
             ]
         });
     }
+
+    const indexOfLastBook = currentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    let lastItem = booksPerPage * currentPage <= totalAmountOfBooks ?
+        booksPerPage * currentPage : totalAmountOfBooks;
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container">

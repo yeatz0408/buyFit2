@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
-import Navbar from './components/Navbar';
+import { Navbar } from './components/Navbar';
 import PageIndex from './admin/pages/PageIndex';
 import PageAdd from './admin/pages/PageAdd'
 import PageEdit from './admin/pages/PageEdit'
@@ -18,7 +18,9 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
+
+        <Navbar admin={true} />
+
         <Routes>
 
           <Route exact path="/admin/pages" element={<PageIndex/>}/>

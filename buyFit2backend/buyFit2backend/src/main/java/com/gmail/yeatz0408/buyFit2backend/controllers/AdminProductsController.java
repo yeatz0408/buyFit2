@@ -83,11 +83,4 @@ public class AdminProductsController {
         }
     }
 
-    @PostMapping("/add2")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product add2(@RequestBody Product product) throws IOException {
-
-        return null;
-    }
-
 }
