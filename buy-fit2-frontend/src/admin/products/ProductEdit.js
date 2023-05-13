@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+
 
 export default function Edit() {
+
+    const { id } = useParams();
+    let navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
@@ -22,14 +27,33 @@ export default function Edit() {
     const { productName, description, price, categoryId, img } = product;
 
     const [categories, setCategories] = useState([]);
+    const [loadedCats, setLoadedCats] = useState({});
 
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
+
+        const tempLoadedCats = {}
+
+        for (const cat of result.data) {
+            console.log(cat["id"] + "   " + cat["catName"]);
+            tempLoadedCats[cat["id"]] = cat["catName"];
+        }
+
+        console.log(tempLoadedCats[4]);
+
+        setLoadedCats(tempLoadedCats);
         setCategories(result.data);
     };
 
+    const loadProducts = async () => {
+        const result = await axios.get(`http://localhost:8080/admin/products/edit/${id}`);
+        setProduct(result.data);
+    }
+
     useEffect(() => {
         loadCats();
+        loadProducts();
+
     }, []);
 
 
@@ -68,7 +92,9 @@ export default function Edit() {
             img: ""
         });
 
-        alert("新しい商品が登録されました。");
+        alert("商品が変更されました。");
+        navigate("/admin/products")
+
 
     }
 
@@ -81,7 +107,7 @@ export default function Edit() {
 
                     <div className="form-group">
                         <label htmlFor="productName" className="form-label">商品名</label>
-                        <input name="productName" id="productName" type="text" className="form-control mb-3"
+                        <input name="productName" id="productName" type="text" className="form-control"
                             placeholder="商品名" value={productName}
                             {...register('productName', { required: true, minLength: 2, maxLength: 30 })}
                             onChange={(e) => onInputChange(e)}
@@ -93,10 +119,11 @@ export default function Edit() {
                         {errors.productName && errors.productName.type === "maxLength" &&
                             <span className="panel-footer text-danger">30文字以下でお願いします</span>}
                     </div>
+                    <br/>
 
                     <div className="form-group">
                         <label htmlFor="description" className="form-label">内容</label>
-                        <textarea name="description" id="description" className="form-control mb-3"
+                        <textarea name="description" id="description" className="form-control"
                             placeholder="内容" value={description}
                             {...register('description', { required: true, minLength: 5 })}
                             onChange={(e) => onInputChange(e)}
@@ -106,15 +133,17 @@ export default function Edit() {
                         {errors.description && errors.description.type === "minLength" &&
                             <span className="panel-footer text-danger">5文字以上でお願いします</span>}
                     </div>
+                    <br/>
 
                     <div className="form-group">
                         <label htmlFor="file" className="form-label">イメージ</label>
-                        <input name="img" type="file" id='file' className="form-control mb-3" onChange={e => base64ConversionForImages(e)}></input>
+                        <input name="img" type="file" id='file' className="form-control" onChange={e => base64ConversionForImages(e)}></input>
                     </div>
+                    <br/>
 
                     <div className="form-group">
                         <label htmlFor="price" className="form-label">価格</label>
-                        <input name="price" id="price" type="number" className="form-control mb-3"
+                        <input name="price" id="price" type="number" className="form-control"
                             placeholder="価格" value={price}
                             {...register('price', { required: true, min: 1 })}
                             onChange={(e) => onInputChange(e)}
@@ -124,23 +153,28 @@ export default function Edit() {
                         {errors.price && errors.price.type === "min" &&
                             <span className="panel-footer text-danger">1円以上でお願いします</span>}
                     </div>
+                    <br/>
 
                     <div className="form-group">
                         <label htmlFor="categoryId" className="form-label">カテゴリー:</label>
-                        <select name="categoryId" id="categoryId" className="form-control mb-3" {...register('categoryId', { min: 1 })}
+                        <select name="categoryId" id="categoryId" className="form-control" {...register('categoryId', { min: 1 })}
                             onChange={(e) => onInputChange(e)}>
-                            <option value="0">カテゴリー</option>
+                            <option value={categoryId}>{loadedCats[categoryId]}</option>
                             {
                                 categories.map((category) => (
-                                    <option value={category.id}>{category.catName}</option>
+                                    category.id != categoryId ?
+                                        <option value={category.id}>{category.catName}</option>
+                                        :
+                                        <></>
                                 ))
                             }
                         </select>
                         {errors.categoryId && errors.categoryId.type === "min" &&
                             <span className="panel-footer text-danger">カテゴリーを選択してください。</span>}
                     </div>
+                    <br/>
 
-                    <button type="submit" className="btn btn-danger">追加</button>
+                    <button type="submit" className="btn btn-danger">変更</button>
                     <Link to="/admin/products" className="btn btn-danger mx-2 px-1" >取り消し</Link>
 
                 </form>

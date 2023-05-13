@@ -10,7 +10,9 @@ import CategoryAdd from './admin/categories/CategoryAdd'
 import CategoryEdit from './admin/categories/CategoryEdit'
 import ProductIndex from './admin/products/ProductIndex'
 import ProductAdd from './admin/products/ProductAdd'
+import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
 
           <Route exact path="/admin/products" element={<ProductIndex/>}/>
           <Route exact path="/admin/products/add" element={<ProductAdd/>}/>
+          <Route exact path="/admin/products/edit/:id" element={<ProductEdit/>}/>
 
         </Routes>
 
