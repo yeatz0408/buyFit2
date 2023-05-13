@@ -112,8 +112,6 @@ export default function Edit() {
                             {...register('productName', { required: true, minLength: 2, maxLength: 30 })}
                             onChange={(e) => onInputChange(e)}
                         ></input>
-                        {errors.productName && errors.productName.type === "required" &&
-                            <span className="panel-footer text-danger">商品名を入力ください</span>}
                         {errors.productName && errors.productName.type === "minLength" &&
                             <span className="panel-footer text-danger">２文字以上でお願いします</span>}
                         {errors.productName && errors.productName.type === "maxLength" &&
