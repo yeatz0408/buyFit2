@@ -81,7 +81,7 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="productName" className="form-label">商品名</label>
-                        <input name="productName" type="text" className="form-control"
+                        <input name="productName" id="productName" type="text" className="form-control mb-3"
                             placeholder="商品名" value={productName}
                             {...register('productName', { required: true, minLength: 2, maxLength: 30 })}
                             onChange={(e) => onInputChange(e)}
@@ -96,7 +96,7 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="description" className="form-label">内容</label>
-                        <textarea name="description" className="form-control"
+                        <textarea name="description" id="description" className="form-control mb-3"
                             placeholder="内容" value={description}
                             {...register('description', { required: true, minLength: 5 })}
                             onChange={(e) => onInputChange(e)}
@@ -109,12 +109,12 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="file" className="form-label">イメージ</label>
-                        <input name="img" type="file" className="form-control" onChange={e => base64ConversionForImages(e)}></input>
+                        <input name="img" type="file" id='file' className="form-control mb-3" onChange={e => base64ConversionForImages(e)}></input>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="price" className="form-label">価格</label>
-                        <input name="price" type="number" className="form-control"
+                        <input name="price" id="price" type="number" className="form-control mb-3"
                             placeholder="価格" value={price}
                             {...register('price', { required: true, min: 1 })}
                             onChange={(e) => onInputChange(e)}
@@ -126,8 +126,8 @@ export default function Add() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="">Category:</label>
-                        <select name="categoryId" className="form-control" {...register('categoryId', { min: 1 })}
+                        <label htmlFor="categoryId" className="form-label">カテゴリー:</label>
+                        <select name="categoryId" id="categoryId" className="form-control mb-3" {...register('categoryId', { min: 1 })}
                             onChange={(e) => onInputChange(e)}>
                             <option value="0">カテゴリー</option>
                             {

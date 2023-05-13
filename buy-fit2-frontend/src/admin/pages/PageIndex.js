@@ -26,15 +26,15 @@ export default function Index() {
         confirmAlert({
             message: '削除しますか？',
             buttons: [
-              {
-                label: 'はい',
-                onClick: () => deletePage(id)
-              },
-              {
-                label: 'いいえ',
-              }
+                {
+                    label: 'はい',
+                    onClick: () => deletePage(id)
+                },
+                {
+                    label: 'いいえ',
+                }
             ]
-          });
+        });
     }
 
     return (
@@ -48,26 +48,32 @@ export default function Index() {
 
             <div>
                 <table className="table">
-                    <tr>
-                        <th>タイトル</th>
-                        <th>スラグ</th>
-                        <th></th>
-                    </tr>
-                    {
-                        pages.map((page, index) => (
-                            <tr key={page.id}>
-                                <td>{page.title}</td>
-                                <td>{page.slug}</td>
-                                <td><Link
-                                    to={`/admin/pages/edit/${page.id}`}
-                                    className="btn btn-outline-primary mx-2">変更</Link></td>
-                                <button
-                                    className="btn btn-danger mx-2"
-                                    onClick={() => submitDelete(page.id)}
-                                >削除</button>
-                            </tr>
-                        ))
-                    }
+                    <thead className="thead-light">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>スラグ</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            pages.map((page, index) => (
+                                <tr key={page.id}>
+                                    <td>{page.title}</td>
+                                    <td>{page.slug}</td>
+                                    <td><Link
+                                        to={`/admin/pages/edit/${page.id}`}
+                                        className="btn btn-outline-primary mx-2">変更</Link></td>
+                                    <td><button
+                                        className="btn btn-danger mx-2"
+                                        onClick={() => submitDelete(page.id)}
+                                    >削除</button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>

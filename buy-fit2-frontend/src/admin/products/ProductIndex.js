@@ -63,6 +63,7 @@ export default function Index() {
 
             <div>
                 <table className="table">
+                    <thead>
                     <tr>
                         <th>イメージ</th>
                         <th>商品名</th>
@@ -71,6 +72,8 @@ export default function Index() {
                         <th>変更</th>
                         <th>削除</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {
                         products.map((product, index) => (
                             <tr key={product.id}>
@@ -82,13 +85,15 @@ export default function Index() {
                                 <td><Link
                                     to={`/admin/products/edit/${product.id}`}
                                     className="btn btn-outline-primary mx-2">変更</Link></td>
-                                <button
+                                <td><button
                                     className="btn btn-danger mx-2"
                                     onClick={() => submitDelete(product.id)}
                                 >削除</button>
+                                </td>
                             </tr>
                         ))
                     }
+                    </tbody>
                 </table>
             </div>
         </div>
