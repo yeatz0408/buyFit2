@@ -6,15 +6,17 @@ import { useForm } from 'react-hook-form';
 export default function Add() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const [product, setProduct] = useState({
         productName: "",
         description: "",
         price: "",
-        categoryId: ""
+        categoryId: "",
+        img: ""
     })
 
-    const { productName, description, price, categoryId } = product;
+    const { productName, description, price, categoryId, img } = product;
 
     const [categories, setCategories] = useState([]);
 
@@ -32,16 +34,36 @@ export default function Add() {
         setProduct({ ...product, [e.target.name]: e.target.value });
     }
 
+    async function base64ConversionForImages(e) {
+        if (e.target.files[0]) {
+            getBase64(e.target.files[0]);
+        }
+    }
+
+    function getBase64(file) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+            setSelectedImage(reader.result);
+        };
+        reader.onerror = function (error) {
+            console.log('Error', error);
+        }
+
+    }
+
     const onSubmit = async (e) => {
 
         // e.preventDefault();
 
-        await axios.post("http://localhost:8080/admin/products/add", product);
+        await axios.post("http://localhost:8080/admin/products/add", {...product, img: selectedImage});
+
         setProduct({
             productName: "",
             description: "",
             price: "",
-            categoryId: ""
+            categoryId: "",
+            img: ""
         });
     }
 
@@ -50,7 +72,7 @@ export default function Add() {
             <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                 <h1 className="text-center m-4">商品追加</h1>
 
-                <form onSubmit={handleSubmit((e) => onSubmit(e))} encType="multipart/form-data">
+                <form onSubmit={handleSubmit((e) => onSubmit(e))}>
 
                     <div className="form-group">
                         <label htmlFor="productName" className="form-label">商品名</label>
@@ -82,7 +104,7 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="file" className="form-label">イメージ</label>
-                        <input name="file" type="file" className="form-control"></input>
+                        <input name="img" type="file" className="form-control" onChange={e => base64ConversionForImages(e)}></input>
                     </div>
 
                     <div className="form-group">
@@ -98,7 +120,7 @@ export default function Add() {
                             <span className="panel-footer text-danger">1円以上でお願いします</span>}
                     </div>
 
-                    <div class="form-group">
+                    <div className="form-group">
                         <label htmlFor="">Category:</label>
                         <select name="categoryId" className="form-control" {...register('categoryId', { min: 1 })}
                             onChange={(e) => onInputChange(e)}>

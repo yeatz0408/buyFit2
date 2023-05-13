@@ -60,7 +60,8 @@ export default function Index() {
                         products.map((product, index) => (
                             <tr key={product.id}>
                                 <td>{product.productName}</td>
-                                <td>{product.image}</td>
+                                <td><img src={product.img}
+                                width='50' height='50' alt='No Image' /></td>
                                 <td>{product.price}</td>
                                 <td><Link
                                     to={`/admin/products/edit/${product.id}`}

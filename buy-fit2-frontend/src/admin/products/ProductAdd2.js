@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 
 export default function Add() {
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
 
+    const [selectedImage, setSelectedImage] = useState(null);
     const [product, setProduct] = useState({
         productName: "dsafsdafsadfdas",
         description: "dafsdsafdsdsafdsaaf",
@@ -19,23 +19,37 @@ export default function Add() {
     const onSubmit = async (e) => {
 
         // e.preventDefault();
-
-        await axios.post("http://localhost:8080/admin/products/add2", product);
+        console.log(JSON.stringify(selectedImage));
         
+    }
+
+    async function base64ConversionForImages(e) {
+        if (e.target.files[0]) {
+            getBase64(e.target.files[0]);
+        }
+    }
+
+    function getBase64(file) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+            setSelectedImage(reader.result);
+            console.log(reader.result);
+        };
+        reader.onerror = function (error) {
+            console.log('Error', error);
+        }
     }
 
     return (
         <div className="container">
-            <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                <h1 className="text-center m-4">商品追加</h1>
-
-                <form onSubmit={(e) => onSubmit(e)} encType="multipart/form-data">
+                <form onSubmit={(e) => onSubmit(e)}>
                    
-                    <input name="file" type="file" className="form-control"></input>
+                    <input name="file" type="file" className="form-control"
+                         onChange={(e) => base64ConversionForImages(e)}></input>
 
                     <button type="submit" className="btn btn-danger">追加</button>
                 </form>
-            </div>
         </div>
     )
 }

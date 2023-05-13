@@ -40,8 +40,8 @@ public class Product {
     @Column(name="description")
     private String description;
 
-    @Column(name="image")
-    private String image;
+    @Column(name="img")
+    private String img;
 
     //@Size(min=2, message = "2文字以上入力してください。")
     @Column(name="productName")

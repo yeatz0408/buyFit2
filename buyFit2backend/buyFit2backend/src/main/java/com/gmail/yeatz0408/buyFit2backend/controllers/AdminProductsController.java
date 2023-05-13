@@ -1,9 +1,6 @@
 package com.gmail.yeatz0408.buyFit2Backend.controllers;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gmail.yeatz0408.buyFit2Backend.Exceptions.DataNotFoundException;
+import com.gmail.yeatz0408.buyFit2Backend.entities.Category;
 import com.gmail.yeatz0408.buyFit2Backend.entities.Product;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.CategoryRepository;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.ProductRepository;
@@ -47,33 +45,13 @@ public class AdminProductsController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product add(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
+    public Product add(@RequestBody Product product) throws IOException {
 
-        System.out.println(product.getProductName() + product.getPrice() + product.getDescription());
+        //String slug = product.getProductName().toLowerCase().replace(" ", "-");
 
-        Product slugExists = productRepo.findBySlug(product.getSlug())
-                            .orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + product.getId()));;
+        //product.setSlug(slug);
 
-        boolean fileOk = false;
-        byte[] bytes = file.getBytes();
-        String filename = file.getOriginalFilename();
-        Path path = Paths.get("src/main/resources/static/media/" + filename);
-
-        if ( filename.endsWith("jpg") || filename.endsWith("jpeg") ) {
-            fileOk = true;
-        }
-
-        if ( fileOk && slugExists != null ) {
-
-            product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
-            product.setImage(filename);
-
-            Files.write(path, bytes);
-
-            return productRepo.save(product);    
-        }
-
-        return null;
+        return productRepo.save(product);
     }
 
     @GetMapping("/edit/{id}")
@@ -95,7 +73,6 @@ public class AdminProductsController {
         boolean fileOk = false;
         byte[] bytes = file.getBytes();
         String filename = file.getOriginalFilename();
-        Path path = Paths.get("src/main/resources/static/media/" + filename);
 
         if ( !file.isEmpty() ) {
             if ( filename.endsWith("jpg") ) {
@@ -107,13 +84,8 @@ public class AdminProductsController {
 
         if ( fileOk && slugExists != null ) {
 
-            Path paths2 = Paths.get("src/main/resources/static/media/" + currentProduct.getImage());
-            Files.delete(paths2);
-
             product.setSlug(product.getProductName().toLowerCase().replace(" ", "-"));
-            product.setImage(filename);
-
-            Files.write(path, bytes);
+            product.setImg(filename);
 
             return productRepo.save(product);    
         }
@@ -134,12 +106,7 @@ public class AdminProductsController {
 
     @PostMapping("/add2")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product add2(@RequestBody Product product, @RequestParam("file") MultipartFile file) throws IOException {
-
-        byte[] bytes = file.getBytes();
-        String filename = file.getOriginalFilename();
-        Path path = Paths.get("src/main/resources/static/media/" + filename);
-        Files.write(path, bytes);
+    public Product add2(@RequestBody Product product) throws IOException {
 
         return null;
     }
