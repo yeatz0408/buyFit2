@@ -7,15 +7,30 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 export default function Index() {
 
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         loadProducts();
+        loadCats();
     }, []);
 
     const loadProducts = async () => {
         const result = await axios.get("http://localhost:8080/admin/products");
         setProducts(result.data);
     };
+
+    const loadCats = async () => {
+        const results = await axios.get("http://localhost:8080/admin/categories");
+        
+
+        const loadedCats = {};
+
+        for (const cat of results.data) {
+            loadedCats[cat["id"]] = cat["catName"];           
+        }
+
+        setCategories(loadedCats);
+    }
 
     const deleteProducts = async (id) => {
         await axios.delete(`http://localhost:8080/admin/products/delete/${id}`);
@@ -26,15 +41,15 @@ export default function Index() {
         confirmAlert({
             message: '削除しますか？',
             buttons: [
-              {
-                label: 'はい',
-                onClick: () => deleteProducts(id)
-              },
-              {
-                label: 'いいえ',
-              }
+                {
+                    label: 'はい',
+                    onClick: () => deleteProducts(id)
+                },
+                {
+                    label: 'いいえ',
+                }
             ]
-          });
+        });
     }
 
     return (
@@ -49,8 +64,8 @@ export default function Index() {
             <div>
                 <table className="table">
                     <tr>
-                        <th>商品名</th>
                         <th>イメージ</th>
+                        <th>商品名</th>
                         <th>カテゴリー</th>
                         <th>価格</th>
                         <th>変更</th>
@@ -59,9 +74,10 @@ export default function Index() {
                     {
                         products.map((product, index) => (
                             <tr key={product.id}>
-                                <td>{product.productName}</td>
                                 <td><img src={product.img}
-                                width='50' height='50' alt='No Image' /></td>
+                                    width='50' height='50' alt='No Image' /></td>
+                                <td>{product.productName}</td>
+                                <td>{categories[product.categoryId]}</td>
                                 <td>{product.price}</td>
                                 <td><Link
                                     to={`/admin/products/edit/${product.id}`}
