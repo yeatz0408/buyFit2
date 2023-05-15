@@ -10,13 +10,11 @@ export default function Index() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
 
-    //pagination
+    // pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage] = useState(5);
     const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [search, setSearch] = useState('');
-    const [searchUrl, setSearchUrl] = useState('');
+
     
 
     useEffect(() => {
@@ -28,10 +26,10 @@ export default function Index() {
 
         const baseUrl = "http://localhost:8080/admin/products";
 
-        let url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+        const url = `${baseUrl}?page=${currentPage}&size=3`;
 
         const result = await axios.get(url);
-        setProducts(result.data);
+        setProducts(result.data.content);
     };
 
     const loadCats = async () => {

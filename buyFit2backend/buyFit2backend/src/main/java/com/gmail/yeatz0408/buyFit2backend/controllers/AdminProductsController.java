@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.gmail.yeatz0408.buyFit2Backend.Exceptions.DataNotFoundException;
-import com.gmail.yeatz0408.buyFit2Backend.entities.Category;
 import com.gmail.yeatz0408.buyFit2Backend.entities.Product;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.CategoryRepository;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.ProductRepository;
@@ -37,11 +37,18 @@ public class AdminProductsController {
     private CategoryRepository catRepo;
 
     @GetMapping
-    public Iterable<Product> index() {
-        List<Product> products = productRepo.findAll();
-
-        return products;
+    public Page<Product> getMyEntities(@RequestParam(name = "page", defaultValue = "0") int page,
+                                        @RequestParam(name = "size", defaultValue = "3") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return productRepo.findAll(pageRequest);
     }
+
+    // @GetMapping
+    // public Iterable<Product> index() {
+    //     List<Product> products = productRepo.findAll();
+
+    //     return products;
+    // }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
