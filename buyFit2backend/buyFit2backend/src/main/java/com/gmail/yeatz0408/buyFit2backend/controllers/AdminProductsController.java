@@ -36,21 +36,7 @@ public class AdminProductsController {
     @Autowired
     private CategoryRepository catRepo;
 
-    @GetMapping
-    public Page<Product> getMyEntities(@RequestParam(name = "page", defaultValue = "0") int page,
-                                        @RequestParam(name = "size", defaultValue = "3") int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return productRepo.findAll(pageRequest);
-    }
-
-    // @GetMapping
-    // public Iterable<Product> index() {
-    //     List<Product> products = productRepo.findAll();
-
-    //     return products;
-    // }
-
-    @PostMapping("/add")
+    @PostMapping("/admin/products/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product) throws IOException {
 
@@ -61,13 +47,13 @@ public class AdminProductsController {
         return productRepo.save(product);
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/products/edit/{id}")
     public Product edit(@PathVariable Long id) {
 
         return productRepo.findById(id).orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + id));
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/admin/products/edit/{id}")
     public Product put(@RequestBody Product product) {
 
         if (product.getSlug() == "" || product.getSlug() == null) {
@@ -79,7 +65,7 @@ public class AdminProductsController {
         return productRepo.save(product);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/products/delete/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         

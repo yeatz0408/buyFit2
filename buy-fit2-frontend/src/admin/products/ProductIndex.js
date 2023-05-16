@@ -26,7 +26,7 @@ export default function Index() {
 
     const loadProducts = async () => {
 
-        const baseUrl = "http://localhost:8080/admin/products";
+        const baseUrl = "http://localhost:8080/products";
 
         const url = `${baseUrl}?page=${currentPage}&size=${perPage}`;
 

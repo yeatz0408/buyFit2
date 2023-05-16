@@ -13,15 +13,17 @@ import ProductAdd from './admin/products/ProductAdd'
 import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import Page from './user/Page';
 
 function App() {
   return (
     <div className="App">
       <Router>
 
-        <Navbar admin={true} />
+        <Navbar admin={false} />
 
         <Routes>
+        <Route exact path="/" element={<Page/>} />
 
           <Route exact path="/admin/pages" element={<PageIndex/>}/>
           <Route exact path="/admin/pages/add" element={<PageAdd/>}/>
@@ -34,6 +36,8 @@ function App() {
           <Route exact path="/admin/products" element={<ProductIndex/>}/>
           <Route exact path="/admin/products/add" element={<ProductAdd/>}/>
           <Route exact path="/admin/products/edit/:id" element={<ProductEdit/>}/>
+
+          <Route exact path="/pages/:slug" element={<Page/>}/>
 
         </Routes>
 

@@ -1,0 +1,32 @@
+package com.gmail.yeatz0408.buyFit2Backend.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gmail.yeatz0408.buyFit2Backend.entities.Product;
+import com.gmail.yeatz0408.buyFit2Backend.repositories.CategoryRepository;
+import com.gmail.yeatz0408.buyFit2Backend.repositories.ProductRepository;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductRepository productRepo;
+
+    @Autowired
+    private CategoryRepository catRepo;
+
+    @GetMapping
+    public Page<Product> getMyEntities(@RequestParam(name = "page", defaultValue = "0") int page,
+                                        @RequestParam(name = "size", defaultValue = "3") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return productRepo.findAll(pageRequest);
+    }
+    
+}
