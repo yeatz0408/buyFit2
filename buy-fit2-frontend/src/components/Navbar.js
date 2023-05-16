@@ -8,7 +8,6 @@ export const Navbar = (props) => {
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
         setCategories(result.data);
-        console.log(result.data);
     };
 
     useEffect(() => {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import axios from 'axios';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Pagination } from '../../util/Pagination';
 
 export default function Index() {
 
@@ -11,11 +12,12 @@ export default function Index() {
     const [categories, setCategories] = useState([]);
 
     // pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage] = useState(5);
-    const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
-    
+    const paginate = (pageNumber) => setCurrentPage(pageNumber-1);
+
+    let perPage = 5;
 
     useEffect(() => {
         loadProducts();
@@ -26,10 +28,12 @@ export default function Index() {
 
         const baseUrl = "http://localhost:8080/admin/products";
 
-        const url = `${baseUrl}?page=${currentPage}&size=3`;
+        const url = `${baseUrl}?page=${currentPage}&size=${perPage}`;
 
         const result = await axios.get(url);
         setProducts(result.data.content);
+
+        setTotalPages(result.data.totalPages);
     };
 
     const loadCats = async () => {
@@ -64,13 +68,6 @@ export default function Index() {
             ]
         });
     }
-
-    const indexOfLastBook = currentPage * booksPerPage;
-    const indexOfFirstBook = indexOfLastBook - booksPerPage;
-    let lastItem = booksPerPage * currentPage <= totalAmountOfBooks ?
-        booksPerPage * currentPage : totalAmountOfBooks;
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container">
@@ -116,6 +113,7 @@ export default function Index() {
                     </tbody>
                 </table>
             </div>
+            <Pagination currentPage={currentPage+1} totalPages={totalPages} paginate={paginate}/>
         </div>
     )
 }
