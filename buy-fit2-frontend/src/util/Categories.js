@@ -15,10 +15,10 @@ export const Categories = () => {
     }, []);
     
     return (
-        <div className="col-3">
-            <h3 className="display-6">商品カテゴリー</h3>
+        <div className="col-2" style={{ marginTop: "20px" }}>
+            <h3 className="display-10">商品カテゴリー</h3>
             <ul className="list-group">
-                <li className="list-group-item">
+                <li className="list-group-item taller-li">
                     <a href="/category/all" className="nav-link">全て</a>
                 </li>
                 {

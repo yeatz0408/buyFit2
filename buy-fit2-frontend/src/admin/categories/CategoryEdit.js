@@ -69,7 +69,7 @@ export default function Edit() {
               placeholder="Slug" value={slug} onChange={(e) => onInputChange(e)}
             ></input>
           </div>
-
+          <br/>
           <button type="submit" className="btn btn-danger">変更</button>
           <Link to="/admin/categories" className="btn btn-danger mx-2 px-1" >取り消し</Link>
 

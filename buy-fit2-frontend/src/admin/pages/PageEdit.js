@@ -83,8 +83,8 @@ export default function Edit() {
             {errors.content && errors.content.type === "minLength" &&
               <span className="panel-footer text-danger">5文字以上でお願いします</span>}
           </div>
-
-          <button type="submit" className="btn btn-danger">追加</button>
+          <br/>
+          <button type="submit" className="btn btn-danger">変更</button>
           <Link to="/admin/pages" className="btn btn-danger mx-2 px-1" >取り消し</Link>
 
         </form>
