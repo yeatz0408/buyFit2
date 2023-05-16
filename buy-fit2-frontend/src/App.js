@@ -14,6 +14,7 @@ import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import Page from './user/Page';
+import { Categories } from './util/Categories';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Router>
 
         <Navbar admin={false} />
+        <Categories/>
 
         <Routes>
         <Route exact path="/" element={<Page/>} />
