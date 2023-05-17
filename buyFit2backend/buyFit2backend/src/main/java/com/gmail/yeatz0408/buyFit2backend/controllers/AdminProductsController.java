@@ -36,7 +36,7 @@ public class AdminProductsController {
     @Autowired
     private CategoryRepository catRepo;
 
-    @PostMapping("/admin/products/add")
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product) throws IOException {
 
@@ -47,13 +47,13 @@ public class AdminProductsController {
         return productRepo.save(product);
     }
 
-    @GetMapping("/admin/products/edit/{id}")
+    @GetMapping("/edit/{id}")
     public Product edit(@PathVariable Long id) {
 
         return productRepo.findById(id).orElseThrow(() -> new DataNotFoundException(this.getClass() + " : " + id));
     }
 
-    @PutMapping("/admin/products/edit/{id}")
+    @PutMapping("/edit/{id}")
     public Product put(@RequestBody Product product) {
 
         if (product.getSlug() == "" || product.getSlug() == null) {
@@ -65,7 +65,7 @@ public class AdminProductsController {
         return productRepo.save(product);
     }
 
-    @DeleteMapping("/admin/products/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         
