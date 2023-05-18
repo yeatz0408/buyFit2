@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 
 export default function Edit() {
 
   let navigate = useNavigate();
+  const { id } = useParams();
+  const [editor, setEditor] = useState(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const { id } = useParams();
 
   const [page, setPage] = useState({
     title: "",
@@ -19,15 +21,23 @@ export default function Edit() {
 
   const { title, slug, content } = page;
 
-  const onInputChange = (e) => {
-    setPage({ ...page, [e.target.name]: e.target.value });
+  const onInputChange = (event, editor) => {
+
+    if (event.target && event.target.name === "content") {
+      setPage({ ...page, [event.target.name]: editor.getData() });
+    } else if (event.target && event.target.name) {
+      setPage({ ...page, [event.target.name]: event.target.value });
+    }
+
   }
 
   const onSubmit = async (e) => {
 
     // e.preventDefault();
 
-    await axios.put(`http://localhost:8080/admin/pages/edit/${id}`, page);
+    const updatedContent = await editor.getData();
+
+    await axios.put(`http://localhost:8080/admin/pages/edit/${id}`, { ...page, content: updatedContent });
     navigate("/admin/pages");
   }
 
@@ -73,17 +83,21 @@ export default function Edit() {
 
           <div className="form-group">
             <label htmlFor="content" className="form-label">内容</label>
-            <textarea name="content" className="form-control"
-              placeholder="内容" value={content}
-              {...register('content', { required: true, minLength: 5 })}
-              onChange={(e) => onInputChange(e)}
-            ></textarea>
-            {errors.content && errors.content.type === "required" &&
-              <span className="panel-footer text-danger">タイトルを入力ください</span>}
-            {errors.content && errors.content.type === "minLength" &&
+            <CKEditor name="content" id="content" editor={Editor}
+              style={{ height: '800px' }}
+              data={content}
+              onChange={(event, editor) => onInputChange(event, editor)}
+              onReady={(editor) => setEditor(editor)}
+            // onReady={(editor) => {
+            //     // When the editor is ready, get its container element and set the height
+            //     const editorElement = editor.ui.getEditableElement();
+            //     editorElement.style.height = '400px';
+            // }}
+            />
+            {page.content.length < 6 === "minLength" &&
               <span className="panel-footer text-danger">5文字以上でお願いします</span>}
           </div>
-          <br/>
+          <br />
           <button type="submit" className="btn btn-danger">変更</button>
           <Link to="/admin/pages" className="btn btn-danger mx-2 px-1" >取り消し</Link>
 

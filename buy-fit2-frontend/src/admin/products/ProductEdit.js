@@ -59,7 +59,7 @@ export default function Edit() {
     const onInputChange = (event, editor) => {
 
         if (event.target && event.target.name === "description") {
-            setProduct({ ...product, [event.target.name]: editor.getData });
+            setProduct({ ...product, [event.target.name]: editor.getData() });
           } else if (event.target && event.target.name) {
             setProduct({ ...product, [event.target.name]: event.target.value });
           }

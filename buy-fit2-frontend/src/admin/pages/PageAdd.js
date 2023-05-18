@@ -20,7 +20,7 @@ export default function Add() {
 
     const onInputChange = (event, editor) => {
         if (event.target && event.target.name === "content") {
-            setPage({ ...page, [event.target.name]: editor.getData });
+            setPage({ ...page, [event.target.name]: editor.getData() });
           } else if (event.target && event.target.name) {
             setPage({ ...page, [event.target.name]: event.target.value });
           }
