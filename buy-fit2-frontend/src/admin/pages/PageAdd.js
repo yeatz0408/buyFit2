@@ -1,34 +1,46 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 
 export default function Add() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [editor, setEditor] = useState(null);
+    let navigate = useNavigate();
 
     const [page, setPage] = useState({
         title: "",
         slug: "",
         content: ""
     })
-
     const { title, slug, content } = page;
 
-    const onInputChange = (e) => {
-        setPage({ ...page, [e.target.name]: e.target.value });
+    const onInputChange = (event, editor) => {
+        if (event.target && event.target.name === "content") {
+            setPage({ ...page, [event.target.name]: editor.getData });
+          } else if (event.target && event.target.name) {
+            setPage({ ...page, [event.target.name]: event.target.value });
+          }
     }
 
     const onSubmit = async (e) => {
 
         // e.preventDefault();
+        const updatedContent = await editor.getData();
+        await axios.post("http://localhost:8080/admin/pages/add", { ...page, content: updatedContent });
 
-        await axios.post("http://localhost:8080/admin/pages/add", page);
+        console.log(page);
+
         setPage({
             title: "",
             slug: "",
             content: ""
         });
+
+        navigate("/admin/pages")
     }
 
     return (
@@ -36,7 +48,7 @@ export default function Add() {
             <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                 <h1 className="text-center m-4">ページ追加</h1>
 
-                <form onSubmit={handleSubmit((e) => onSubmit(e))}>
+                <form onSubmit={handleSubmit((event, editor) => onSubmit(event, editor))}>
 
                     <div className="form-group">
                         <label htmlFor="title" className="form-label">タイトル</label>
@@ -62,14 +74,18 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="content" className="form-label">内容</label>
-                        <textarea name="content" className="form-control"
-                            placeholder="内容" value={content} 
-                            {...register('content', { required: true, minLength: 5 })}
-                            onChange={(e) => onInputChange(e)}
-                        ></textarea>
-                        {errors.content && errors.content.type === "required" &&
-                            <span className="panel-footer text-danger">タイトルを入力ください</span>}
-                        {errors.content && errors.content.type === "minLength" &&
+                        <CKEditor name="content" id="content" editor={Editor}
+                            style={{ height: '800px'}}
+                            data={content} 
+                            onChange={(event, editor) => onInputChange(event,editor)}
+                            onReady={(editor) => setEditor(editor)}
+                            // onReady={(editor) => {
+                            //     // When the editor is ready, get its container element and set the height
+                            //     const editorElement = editor.ui.getEditableElement();
+                            //     editorElement.style.height = '400px';
+                            // }}
+                        />
+                        {page.content.length < 6 === "minLength" &&
                             <span className="panel-footer text-danger">5文字以上でお願いします</span>}
                     </div>
                     <br/>

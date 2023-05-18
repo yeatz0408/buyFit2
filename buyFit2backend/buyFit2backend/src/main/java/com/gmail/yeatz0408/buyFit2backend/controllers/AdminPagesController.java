@@ -39,7 +39,9 @@ public class AdminPagesController {
     @ResponseStatus(HttpStatus.CREATED)
     public Page add(@RequestBody Page page) {
 
-        if (page.getSlug() == "" ) {
+        System.out.println("+++++++++++++++++++++++++" + page.getTitle());
+
+        if (page.getSlug() == "" || page.getSlug() == null ) {
             page.setSlug(page.getTitle().toLowerCase().replace(" ", "-"));
         } else {
             page.getSlug().toLowerCase().replace(" ", "-");

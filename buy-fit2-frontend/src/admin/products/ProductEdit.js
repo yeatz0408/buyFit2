@@ -56,9 +56,6 @@ export default function Edit() {
 
     }, []);
 
-    
-
-
     const onInputChange = (event, editor) => {
 
         if (event.target && event.target.name === "description") {
@@ -89,10 +86,7 @@ export default function Edit() {
 
     const onSubmit = async (e) => {
 
-        // e.preventDefault();
         const updatedDescription = await editor.getData();
-
-
         await axios.put(`http://localhost:8080/admin/products/edit/${id}`, { ...product, description: updatedDescription, img: selectedImage });
 
         setProduct({
@@ -105,8 +99,6 @@ export default function Edit() {
 
         alert("商品が変更されました。");
         navigate("/admin/products")
-
-
     }
 
     return (
