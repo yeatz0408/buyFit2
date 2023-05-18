@@ -15,9 +15,6 @@ export default function Edit() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const [displayWarning, setDisplayWarning] = useState(false);
-    const [displaySuccess, setDisplaySuccess] = useState(false);
-
     const [product, setProduct] = useState({
         productName: "",
         description: "",
@@ -30,6 +27,7 @@ export default function Edit() {
 
     const [categories, setCategories] = useState([]);
     const [loadedCats, setLoadedCats] = useState({});
+    const [editor, setEditor] = useState(null);
 
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
@@ -58,13 +56,15 @@ export default function Edit() {
 
     }, []);
 
+    
 
-    const onInputChange = (e) => {
 
-        if (e.target && e.target.name === "description") {
-            setProduct({ ...product, [e.target.name]: e.target.data });
-          } else if (e.target && e.target.name) {
-            setProduct({ ...product, [e.target.name]: e.target.value });
+    const onInputChange = (event, editor) => {
+
+        if (event.target && event.target.name === "description") {
+            setProduct({ ...product, [event.target.name]: editor.getData });
+          } else if (event.target && event.target.name) {
+            setProduct({ ...product, [event.target.name]: event.target.value });
           }
         
     }
@@ -90,7 +90,10 @@ export default function Edit() {
     const onSubmit = async (e) => {
 
         // e.preventDefault();
-        await axios.put(`http://localhost:8080/admin/products/edit/${id}`, { ...product, img: selectedImage });
+        const updatedDescription = await editor.getData();
+
+
+        await axios.put(`http://localhost:8080/admin/products/edit/${id}`, { ...product, description: updatedDescription, img: selectedImage });
 
         setProduct({
             productName: "",
@@ -131,7 +134,8 @@ export default function Edit() {
                         <CKEditor name="description" id="description" editor={Editor}
                             style={{ height: '800px'}}
                             data={description} 
-                            onChange={(e) => onInputChange(e)}
+                            onChange={(event, editor) => onInputChange(event,editor)}
+                            onReady={(editor) => setEditor(editor)}
                             // onReady={(editor) => {
                             //     // When the editor is ready, get its container element and set the height
                             //     const editorElement = editor.ui.getEditableElement();
