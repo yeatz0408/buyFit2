@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 
 
 export default function Edit() {
@@ -58,7 +60,13 @@ export default function Edit() {
 
 
     const onInputChange = (e) => {
-        setProduct({ ...product, [e.target.name]: e.target.value });
+
+        if (e.target && e.target.name === "description") {
+            setProduct({ ...product, [e.target.name]: e.target.data });
+          } else if (e.target && e.target.name) {
+            setProduct({ ...product, [e.target.name]: e.target.value });
+          }
+        
     }
 
     async function base64ConversionForImages(e) {
@@ -82,7 +90,7 @@ export default function Edit() {
     const onSubmit = async (e) => {
 
         // e.preventDefault();
-        await axios.post("http://localhost:8080/admin/products/add", { ...product, img: selectedImage });
+        await axios.put(`http://localhost:8080/admin/products/edit/${id}`, { ...product, img: selectedImage });
 
         setProduct({
             productName: "",
@@ -109,7 +117,6 @@ export default function Edit() {
                         <label htmlFor="productName" className="form-label">商品名</label>
                         <input name="productName" id="productName" type="text" className="form-control"
                             placeholder="商品名" value={productName}
-                            {...register('productName', { required: true, minLength: 2, maxLength: 30 })}
                             onChange={(e) => onInputChange(e)}
                         ></input>
                         {errors.productName && errors.productName.type === "minLength" &&
@@ -117,27 +124,30 @@ export default function Edit() {
                         {errors.productName && errors.productName.type === "maxLength" &&
                             <span className="panel-footer text-danger">30文字以下でお願いします</span>}
                     </div>
-                    <br/>
+                    <br />
 
                     <div className="form-group">
                         <label htmlFor="description" className="form-label">内容</label>
-                        <textarea name="description" id="description" className="form-control"
-                            placeholder="内容" value={description}
-                            {...register('description', { required: true, minLength: 5 })}
+                        <CKEditor name="description" id="description" editor={Editor}
+                            style={{ height: '800px'}}
+                            data={description} 
                             onChange={(e) => onInputChange(e)}
-                        ></textarea>
-                        {errors.description && errors.description.type === "required" &&
-                            <span className="panel-footer text-danger">内容を入力ください</span>}
-                        {errors.description && errors.description.type === "minLength" &&
+                            // onReady={(editor) => {
+                            //     // When the editor is ready, get its container element and set the height
+                            //     const editorElement = editor.ui.getEditableElement();
+                            //     editorElement.style.height = '400px';
+                            // }}
+                        />
+                        {product.description.length < 6 === "minLength" &&
                             <span className="panel-footer text-danger">5文字以上でお願いします</span>}
                     </div>
-                    <br/>
+                    <br />
 
                     <div className="form-group">
                         <label htmlFor="file" className="form-label">イメージ</label>
                         <input name="img" type="file" id='file' className="form-control" onChange={e => base64ConversionForImages(e)}></input>
                     </div>
-                    <br/>
+                    <br />
 
                     <div className="form-group">
                         <label htmlFor="price" className="form-label">価格</label>
@@ -151,7 +161,7 @@ export default function Edit() {
                         {errors.price && errors.price.type === "min" &&
                             <span className="panel-footer text-danger">1円以上でお願いします</span>}
                     </div>
-                    <br/>
+                    <br />
 
                     <div className="form-group">
                         <label htmlFor="categoryId" className="form-label">カテゴリー:</label>
@@ -170,7 +180,7 @@ export default function Edit() {
                         {errors.categoryId && errors.categoryId.type === "min" &&
                             <span className="panel-footer text-danger">カテゴリーを選択してください。</span>}
                     </div>
-                    <br/>
+                    <br />
 
                     <button type="submit" className="btn btn-danger">変更</button>
                     <Link to="/admin/products" className="btn btn-danger mx-2 px-1" >取り消し</Link>

@@ -12,10 +12,8 @@ import ProductIndex from './admin/products/ProductIndex'
 import ProductAdd from './admin/products/ProductAdd'
 import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Link } from 'react-router-dom';
 import Page from './user/Page';
 import { Categories } from './util/Categories';
-import MyCKEditor from './util/MyCKEditor';
 
 function App() {
   return (
@@ -27,8 +25,6 @@ function App() {
 
         <Routes>
         <Route exact path="/" element={<Page/>} />
-
-        <Route exact path="/editor" element={<MyCKEditor/>}/>
 
           <Route exact path="/admin/pages" element={<PageIndex/>}/>
           <Route exact path="/admin/pages/add" element={<PageAdd/>}/>
