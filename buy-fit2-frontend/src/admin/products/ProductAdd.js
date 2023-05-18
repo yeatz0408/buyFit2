@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 
 export default function Add() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
-
-    const [displayWarning, setDisplayWarning] = useState(false);
-    const [displaySuccess, setDisplaySuccess] = useState(false);
 
     const [product, setProduct] = useState({
         productName: "",
@@ -22,6 +21,7 @@ export default function Add() {
     const { productName, description, price, categoryId, img } = product;
 
     const [categories, setCategories] = useState([]);
+    const [editor, setEditor] = useState(null);
 
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
@@ -33,8 +33,14 @@ export default function Add() {
     }, []);
 
 
-    const onInputChange = (e) => {
-        setProduct({ ...product, [e.target.name]: e.target.value });
+    const onInputChange = (event, editor) => {
+
+        if (event.target && event.target.name === "description") {
+            setProduct({ ...product, [event.target.name]: editor.getData });
+          } else if (event.target && event.target.name) {
+            setProduct({ ...product, [event.target.name]: event.target.value });
+          }
+        
     }
 
     async function base64ConversionForImages(e) {
@@ -57,8 +63,8 @@ export default function Add() {
 
     const onSubmit = async (e) => {
 
-        // e.preventDefault();
-        await axios.post("http://localhost:8080/admin/products/add", { ...product, img: selectedImage });
+        const updatedDescription = await editor.getData();
+        await axios.post("http://localhost:8080/admin/products/add", { ...product, description: updatedDescription, img: selectedImage });
 
         setProduct({
             productName: "",
@@ -69,7 +75,6 @@ export default function Add() {
         });
 
         alert("新しい商品が登録されました。");
-
     }
 
     return (
@@ -96,14 +101,18 @@ export default function Add() {
 
                     <div className="form-group">
                         <label htmlFor="description" className="form-label">内容</label>
-                        <textarea name="description" id="description" className="form-control mb-3"
-                            placeholder="内容" value={description}
-                            {...register('description', { required: true, minLength: 5 })}
-                            onChange={(e) => onInputChange(e)}
-                        ></textarea>
-                        {errors.description && errors.description.type === "required" &&
-                            <span className="panel-footer text-danger">内容を入力ください</span>}
-                        {errors.description && errors.description.type === "minLength" &&
+                        <CKEditor name="description" id="description" editor={Editor}
+                            style={{ height: '800px'}}
+                            data={description} 
+                            onChange={(event, editor) => onInputChange(event,editor)}
+                            onReady={(editor) => setEditor(editor)}
+                            // onReady={(editor) => {
+                            //     // When the editor is ready, get its container element and set the height
+                            //     const editorElement = editor.ui.getEditableElement();
+                            //     editorElement.style.height = '400px';
+                            // }}
+                        />
+                        {product.description.length < 6 === "minLength" &&
                             <span className="panel-footer text-danger">5文字以上でお願いします</span>}
                     </div>
 
