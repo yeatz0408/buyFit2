@@ -8,8 +8,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 export default function Add() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [selectedImage, setSelectedImage] = useState(null);
 
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [editor, setEditor] = useState(null);
     const [product, setProduct] = useState({
         productName: "",
         description: "",
@@ -17,21 +19,12 @@ export default function Add() {
         categoryId: "",
         img: ""
     })
-
     const { productName, description, price, categoryId, img } = product;
-
-    const [categories, setCategories] = useState([]);
-    const [editor, setEditor] = useState(null);
 
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
         setCategories(result.data);
     };
-
-    useEffect(() => {
-        loadCats();
-    }, []);
-
 
     const onInputChange = (event, editor) => {
 
@@ -76,6 +69,10 @@ export default function Add() {
 
         alert("新しい商品が登録されました。");
     }
+
+    useEffect(() => {
+        loadCats();
+    }, []);
 
     return (
         <div className="container">

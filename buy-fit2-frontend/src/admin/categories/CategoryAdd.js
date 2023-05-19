@@ -19,9 +19,6 @@ export default function Add() {
     }
 
     const onSubmit = async (e) => {
-
-        // e.preventDefault();
-
         await axios.post("http://localhost:8080/admin/categories/add", category);
         setCategory({
             catName: "",

@@ -21,7 +21,7 @@ function App() {
       <Router>
 
         <Navbar admin={false} />
-        <Categories/>
+        {/* <Categories/> */}
 
         <Routes>
         <Route exact path="/" element={<Page/>} />

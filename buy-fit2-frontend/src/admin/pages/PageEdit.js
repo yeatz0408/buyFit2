@@ -18,7 +18,6 @@ export default function Edit() {
     slug: "",
     content: ""
   })
-
   const { title, slug, content } = page;
 
   const onInputChange = (event, editor) => {
@@ -32,8 +31,6 @@ export default function Edit() {
   }
 
   const onSubmit = async (e) => {
-
-    // e.preventDefault();
 
     const updatedContent = await editor.getData();
 

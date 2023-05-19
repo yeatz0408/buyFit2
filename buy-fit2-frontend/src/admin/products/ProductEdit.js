@@ -11,9 +11,12 @@ export default function Edit() {
 
     const { id } = useParams();
     let navigate = useNavigate();
-
     const { register, handleSubmit, formState: { errors } } = useForm();
+
     const [selectedImage, setSelectedImage] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [loadedCats, setLoadedCats] = useState({});
+    const [editor, setEditor] = useState(null);
 
     const [product, setProduct] = useState({
         productName: "",
@@ -22,12 +25,7 @@ export default function Edit() {
         categoryId: "",
         img: ""
     })
-
     const { productName, description, price, categoryId, img } = product;
-
-    const [categories, setCategories] = useState([]);
-    const [loadedCats, setLoadedCats] = useState({});
-    const [editor, setEditor] = useState(null);
 
     const loadCats = async () => {
         const result = await axios.get("http://localhost:8080/admin/categories")
@@ -49,12 +47,6 @@ export default function Edit() {
         const result = await axios.get(`http://localhost:8080/admin/products/edit/${id}`);
         setProduct(result.data);
     }
-
-    useEffect(() => {
-        loadCats();
-        loadProducts();
-
-    }, []);
 
     const onInputChange = (event, editor) => {
 
@@ -100,6 +92,12 @@ export default function Edit() {
         alert("商品が変更されました。");
         navigate("/admin/products")
     }
+
+    useEffect(() => {
+        loadCats();
+        loadProducts();
+
+    }, []);
 
     return (
         <div className="container">

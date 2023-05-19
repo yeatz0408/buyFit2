@@ -28,7 +28,6 @@ export default function Add() {
 
     const onSubmit = async (e) => {
 
-        // e.preventDefault();
         const updatedContent = await editor.getData();
         await axios.post("http://localhost:8080/admin/pages/add", { ...page, content: updatedContent });
 

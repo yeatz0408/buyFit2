@@ -8,10 +8,6 @@ export default function Index() {
 
     const [pages, setPages] = useState([]);
 
-    useEffect(() => {
-        loadPages();
-    }, []);
-
     const loadPages = async () => {
         const result = await axios.get("http://localhost:8080/admin/pages")
         setPages(result.data);
@@ -36,6 +32,10 @@ export default function Index() {
             ]
         });
     }
+
+    useEffect(() => {
+        loadPages();
+    }, []);
 
     return (
         <div className="container">

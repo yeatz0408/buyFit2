@@ -26,7 +26,7 @@ export default function Index() {
     };
 
     return (
-        <div className="container">
+        <div className="container mt-5">
             <h1 className="display-2">{page.title}</h1>
 
             <div>

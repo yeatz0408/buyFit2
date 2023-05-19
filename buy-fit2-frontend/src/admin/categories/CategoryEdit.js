@@ -5,11 +5,9 @@ import { useForm } from 'react-hook-form';
 
 export default function Edit() {
 
-  let navigate = useNavigate();
-
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
   const { id } = useParams();
+  let navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const [category, setCategory] = useState({
     catName: "",
@@ -23,9 +21,6 @@ export default function Edit() {
   }
 
   const onSubmit = async (e) => {
-
-    // e.preventDefault();
-
     await axios.put(`http://localhost:8080/admin/categories/edit/${id}`, category);
     navigate("/admin/categories");
   }

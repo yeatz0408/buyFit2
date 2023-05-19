@@ -7,6 +7,9 @@ import { Pagination } from '../../util/Pagination';
 
 export default function Index() {
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber-1);
+    let perPage = 5;
+
     // data from database
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -14,15 +17,6 @@ export default function Index() {
     // pagination
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber-1);
-
-    let perPage = 5;
-
-    useEffect(() => {
-        loadProducts();
-        loadCats();
-    }, [currentPage]);
 
     const loadProducts = async () => {
 
@@ -68,6 +62,12 @@ export default function Index() {
             ]
         });
     }
+
+    useEffect(() => {
+        loadProducts();
+        loadCats();
+    }, [currentPage]);
+
 
     return (
         <div className="container">

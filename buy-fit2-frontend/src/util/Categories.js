@@ -11,7 +11,7 @@ export const Categories = () => {
     };
 
     useEffect(() => {
-                loadCats();
+        loadCats();
     }, []);
     
     return (
