@@ -13,6 +13,7 @@ import ProductAdd from './admin/products/ProductAdd'
 import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Page from './user/Page';
+import Product from './user/Product';
 import { Categories } from './util/Categories';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route exact path="/admin/products/edit/:id" element={<ProductEdit/>}/>
 
           <Route exact path="/pages/:slug" element={<Page/>}/>
+          <Route exact path="/products/:slug" element={<Product/>}/>
 
         </Routes>
 

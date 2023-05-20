@@ -15,7 +15,6 @@ export const Navbar = (props) => {
     const loadPages = async () => {
         const result = await axios.get("http://localhost:8080/pages/all")
         setPages(result.data);
-        console.log(result.data);
     }
 
     useEffect(() => {
