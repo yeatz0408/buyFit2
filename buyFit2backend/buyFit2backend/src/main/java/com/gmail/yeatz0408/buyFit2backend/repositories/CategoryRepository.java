@@ -7,5 +7,7 @@ import com.gmail.yeatz0408.buyFit2Backend.entities.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    Category findBySlug(String slug);
     
 }
