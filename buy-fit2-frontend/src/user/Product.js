@@ -54,7 +54,7 @@ export default function Product() {
                                 </p>
                                 <h4 >{product.productName}</h4>
                                 <div className="desc" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></div>
-                                <p>{product.price}</p>
+                                <p>{product.price}円</p>
                                 <div style={{position: "relative"}}>
                                     <p>
                                         <a class="btn btn-primary addToCart">カートに入れる</a>
