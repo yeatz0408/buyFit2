@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar admin={false} />
+        <Navbar admin={true} />
 
         <div className="container-fluid">
           <div className="row">
