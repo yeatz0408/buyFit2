@@ -14,8 +14,8 @@ export default function Add() {
     const [editor, setEditor] = useState(null);
     const [product, setProduct] = useState({
         productName: "",
-        description: "",
         price: "",
+        description: "",
         categoryId: "",
         img: ""
     })

@@ -28,15 +28,15 @@ public class ProductController {
 
     @GetMapping
     public Page<Product> getMyEntities(@RequestParam(name = "page", defaultValue = "0") int page,
-                                        @RequestParam(name = "size", defaultValue = "3") int size) {
+                                        @RequestParam(name = "size", defaultValue = "6") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return productRepo.findAll(pageRequest);
     }
 
-    @GetMapping("category/{slug}")
+    @GetMapping("/{slug}")
     public Page<Product> getProductsByCategory(@PathVariable String slug, 
                                               @RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "size", defaultValue = "3") int size) {
+                                              @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Category cat = catRepo.findBySlug(slug);
         

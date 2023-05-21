@@ -15,7 +15,7 @@ export const Categories = () => {
     }, []);
     
     return (
-        <div className="col-2" style={{ marginTop: "20px" }}>
+        <div style={{ marginTop: "20px" }}>
             <h3 className="display-10">商品カテゴリー</h3>
             <ul className="list-group">
                 <li className="list-group-item taller-li">

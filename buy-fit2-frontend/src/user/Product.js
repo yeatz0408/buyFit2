@@ -9,7 +9,7 @@ import DOMPurify from 'dompurify';
 export default function Product() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber - 1);
-    let perPage = 5;
+    let perPage = 6;
     const { slug } = useParams();
 
     // data from database
@@ -21,9 +21,14 @@ export default function Product() {
 
     const loadProducts = async () => {
 
-        const baseUrl = "http://localhost:8080/products/category";
+        const baseUrl = "http://localhost:8080/products";
 
-        const url = `${baseUrl}/${slug}?page=${currentPage}&size=${perPage}`;
+        let url = `${baseUrl}/${slug}?page=${currentPage}&size=${perPage}`;
+
+        if (!slug || slug === '') {
+            console.log("Entered the if");
+            url = `${baseUrl}?page=${currentPage}&size=${perPage}`;
+        }
 
         console.log(url);
 
@@ -41,7 +46,8 @@ export default function Product() {
         <div class="container-fluid mt-5">
             <div class="row">
                 <div class="col"></div>
-                <div class="col-8">
+                {/* <div class="col-8"> */}
+                <div>
 
                     <h2 class="display-3 mb-5" >{slug}</h2>
 
@@ -59,13 +65,17 @@ export default function Product() {
                                     <p>
                                         <a class="btn btn-primary addToCart">カートに入れる</a>
                                     </p>
-                                    <div class="btn btn-sm btn-success productAdded">カートに入れました。</div>
+                                    {/* <div class="btn btn-sm btn-success productAdded">カートに入れました。</div> */}
                                 </div>
+                                <br></br>
                             </div>
                         ))
                         }
                     </div>
-                    <Pagination currentPage={currentPage + 1} totalPages={totalPages} paginate={paginate} />
+                    <br></br>
+                    <div className='d-flex justify-content-center text-center'>
+                        <Pagination currentPage={currentPage + 1} totalPages={totalPages} paginate={paginate} />
+                    </div>
                 </div>
             </div>
         </div>
