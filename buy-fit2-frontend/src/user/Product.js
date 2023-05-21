@@ -40,7 +40,7 @@ export default function Product() {
 
     useEffect(() => {
         loadProducts();
-    }, [currentPage]);
+    }, [currentPage, slug]);
 
     return (
         <div class="container-fluid mt-5">
