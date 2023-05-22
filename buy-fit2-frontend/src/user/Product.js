@@ -14,6 +14,7 @@ export default function Product() {
 
     // data from database
     const [products, setProducts] = useState([]);
+    const [loadedCats, setLoadedCats] = useState([]);
 
     // pagination
     const [currentPage, setCurrentPage] = useState(0);
@@ -26,20 +27,32 @@ export default function Product() {
         let url = `${baseUrl}/${slug}?page=${currentPage}&size=${perPage}`;
 
         if (!slug || slug === '') {
-            console.log("Entered the if");
-            url = `${baseUrl}?page=${currentPage}&size=${perPage}`;
-        }
+            slug = "";
 
-        console.log(url);
+            url = `${baseUrl}/all?page=${currentPage}&size=${perPage}`;
+        }
 
         const result = await axios.get(url);
         setProducts(result.data.content);
         setTotalPages(result.data.totalPages);
-        console.log(result.data.content);
+    };
+
+    const loadCats = async () => {
+        const result = await axios.get("http://localhost:8080/admin/categories")
+
+        const tempLoadedCats = {}
+
+        for (const cat of result.data) {
+            tempLoadedCats[cat["slug"]] = cat["catName"];
+        }
+
+        setLoadedCats(tempLoadedCats);
+        console.log(tempLoadedCats);
     };
 
     useEffect(() => {
         loadProducts();
+        loadCats();
     }, [currentPage, slug]);
 
     return (
@@ -49,19 +62,25 @@ export default function Product() {
                 {/* <div class="col-8"> */}
                 <div>
 
-                    <h2 class="display-3 mb-5" >{slug}</h2>
+
+                    {loadedCats[slug] ?
+                        <h2 class="display-3 mb-5" >{loadedCats[slug]}</h2>
+                        :
+                        <h2 class="display-3 mb-5" >全ての商品</h2>
+                    }
+                    <br />
 
                     <div class="row">
 
                         {products.map((product) => (
                             <div class="col-4">
                                 <p>
-                                    <img style={{width:"200px"}} src={product.img}/>
+                                    <img style={{ width: "200px" }} src={product.img} />
                                 </p>
                                 <h4 >{product.productName}</h4>
                                 <div className="desc" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></div>
                                 <p>{product.price}円</p>
-                                <div style={{position: "relative"}}>
+                                <div style={{ position: "relative" }}>
                                     <p>
                                         <a class="btn btn-primary addToCart">カートに入れる</a>
                                     </p>

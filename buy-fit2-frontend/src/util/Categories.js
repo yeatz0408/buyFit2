@@ -19,7 +19,7 @@ export const Categories = () => {
             <h3 className="display-10">商品カテゴリー</h3>
             <ul className="list-group">
                 <li className="list-group-item taller-li">
-                    <NavLink className="nav-link" to={"/products"}>全て</NavLink>
+                    <NavLink className="nav-link" to={"/products/all"}>全て</NavLink>
                 </li>
                 {
                     categories.map((category) => (

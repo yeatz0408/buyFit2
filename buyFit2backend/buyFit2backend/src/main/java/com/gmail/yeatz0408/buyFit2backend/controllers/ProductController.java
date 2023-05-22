@@ -44,5 +44,14 @@ public class ProductController {
         
         return productRepo.findByCategoryId(cat.getId(), pageRequest);
     }
+
+    @GetMapping("/all")
+    public Page<Product> getAll(@RequestParam(name = "page", defaultValue = "0") int page,
+                                              @RequestParam(name = "size", defaultValue = "6") int size) {
+        
+        PageRequest pageRequest = PageRequest.of(page, size);
+        
+        return productRepo.findAll(pageRequest);
+    }
     
 }
