@@ -18,61 +18,62 @@ import { Categories } from './util/Categories';
 import { oktaConfig } from './lib/oktaConfig';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { Security, LoginCallback } from '@okta/okta-react';
-import LoginWidget  from './Auth/LoginWidget'
+import LoginWidget from './Auth/LoginWidget'
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
 export const App = () => {
+  // const navigate = useNavigate();
 
   const customAuthHandler = () => {
-    history.push('/login')
-  }
+    // navigate('/login');
+    <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
 
-  const history = useHistory();
+  };
 
-  const restoreOriginalUri = async (_oktaAuth, originalUri: any) => {
-    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    // navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
+    return <Product />
   };
 
   return (
     <div className="App">
       <Router>
         <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={customAuthHandler}>
-        <Navbar admin={true} />
+          <Navbar admin={true} />
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-2">
+                <Categories />
+              </div>
+              <div className="col-10">
+                <Routes>
+                  <Route path="/" element={<Page />} />
 
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-2">
-              <Categories/>
-            </div>
-            <div className="col-10">
-              <Routes>
-                <Route exact path="/" element={<Page/>} />
+                  <Route path="/admin/pages" element={<PageIndex />} />
+                  <Route path="/admin/pages/add" element={<PageAdd />} />
+                  <Route path="/admin/pages/edit/:id" element={<PageEdit />} />
 
-                <Route exact path="/admin/pages" element={<PageIndex/>}/>
-                <Route exact path="/admin/pages/add" element={<PageAdd/>}/>
-                <Route exact path="/admin/pages/edit/:id" element={<PageEdit/>}/>
+                  <Route path="/admin/categories" element={<CategoryIndex />} />
+                  <Route path="/admin/categories/add" element={<CategoryAdd />} />
+                  <Route path="/admin/categories/edit/:id" element={<CategoryEdit />} />
 
-                <Route exact path="/admin/categories" element={<CategoryIndex/>}/>
-                <Route exact path="/admin/categories/add" element={<CategoryAdd/>}/>
-                <Route exact path="/admin/categories/edit/:id" element={<CategoryEdit/>}/>
+                  <Route path="/admin/products" element={<ProductIndex />} />
+                  <Route path="/admin/products/add" element={<ProductAdd />} />
+                  <Route path="/admin/products/edit/:id" element={<ProductEdit />} />
 
-                <Route exact path="/admin/products" element={<ProductIndex/>}/>
-                <Route exact path="/admin/products/add" element={<ProductAdd/>}/>
-                <Route exact path="/admin/products/edit/:id" element={<ProductEdit/>}/>
+                  <Route path="/pages/:slug" element={<Page />} />
+                  <Route path="/products" element={<Product />} />
+                  <Route path="/products/:slug" element={<Product />} />
 
-                <Route exact path="/pages/:slug" element={<Page/>}/>
-                <Route exact path="/products" element={<Product/>}/>
-                <Route exact path="/products/:slug" element={<Product/>}/>
-
-                <Route path="/login" render={() => <LoginWidget config={oktaConfig} />} />
-                <Route path='/login/callback' component={LoginCallback} />
-              </Routes>
+                  <Route path="/login" element={<LoginWidget config={oktaConfig} />} />
+                  <Route path="/login/callback" element={<LoginCallback />} />
+                </Routes>
+              </div>
             </div>
           </div>
-        </div>
         </Security>
       </Router>
     </div>
   );
-}
+};
