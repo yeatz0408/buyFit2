@@ -40,7 +40,7 @@ export const App = () => {
     <div className="App">
       <Router>
         <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={customAuthHandler}>
-          <Navbar admin={true} />
+          <Navbar />
           <div className="container-fluid">
             <div className="row">
               <div className="col-2">
