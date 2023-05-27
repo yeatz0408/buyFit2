@@ -45,24 +45,21 @@ export const Navbar = () => {
 
             {authState.isAuthenticated && authState.accessToken?.claims?.userType === 'admin' ?
 
-                <div>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarCollapse">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="/admin/pages">ページ</a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="/admin/categories">カテゴリー</a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="/admin/products">商品</a>
-                            </li>
-                        </ul>
-                    </div>
+
+                <div className="collapse navbar-collapse" id="navbarCollapse">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item active">
+                            <a className="nav-link" href="/admin/pages">ページ</a>
+                        </li>
+                        <li className="nav-item active">
+                            <a className="nav-link" href="/admin/categories">カテゴリー</a>
+                        </li>
+                        <li className="nav-item active">
+                            <a className="nav-link" href="/admin/products">商品</a>
+                        </li>
+                    </ul>
                 </div>
+
                 :
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <ul className="navbar-nav mr-auto">
@@ -71,17 +68,16 @@ export const Navbar = () => {
                                 <NavLink className="nav-link" to={`/pages/${page.slug}`}>{page.title}</NavLink>
                             </li>
                         ))}
-
                     </ul>
                 </div>
             }
 
             {!authState.isAuthenticated ?
-                <div className='nav-item m-1'>
+                <div className='nav-item mx-4 my-1'>
                     <Link type='button' className='btn btn-outline-light' to="/login">ログイン</Link>
                 </div>
                 :
-                <div className='nav-item m-1'>
+                <div className='nav-item mx-4 my-1'>
                     <a type='button' className='btn btn-outline-light' onClick={handleLogout}>ログアウト</a>
                 </div>
             }
