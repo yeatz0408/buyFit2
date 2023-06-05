@@ -6,14 +6,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gmail.yeatz0408.buyFit2Backend.entities.CartItem;
 import com.gmail.yeatz0408.buyFit2Backend.entities.Category;
 import com.gmail.yeatz0408.buyFit2Backend.entities.Product;
+import com.gmail.yeatz0408.buyFit2Backend.repositories.CartItemRepository;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.CategoryRepository;
 import com.gmail.yeatz0408.buyFit2Backend.repositories.ProductRepository;
+import com.gmail.yeatz0408.buyFit2Backend.utils.ExtractJWT;
 
 @RestController
 @RequestMapping("/products")
@@ -25,6 +29,9 @@ public class ProductController {
 
     @Autowired
     private CategoryRepository catRepo;
+
+    @Autowired
+    private CartItemRepository cartItemRepo;
 
     @GetMapping
     public Page<Product> getMyEntities(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -52,6 +59,25 @@ public class ProductController {
         PageRequest pageRequest = PageRequest.of(page, size);
         
         return productRepo.findAll(pageRequest);
+    }
+
+    @GetMapping("/isaddedtocart/{productId}")
+    public Boolean isaddedtocart(@RequestHeader(value = "Authorization") String token, @PathVariable Long productId) {
+
+        System.out.println(token);
+
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+
+        System.out.println(userEmail);
+
+        CartItem validateCartItem = cartItemRepo.findByUserEmailAndProductId(userEmail, productId);
+
+        if (validateCartItem != null) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
     
 }
