@@ -73,8 +73,10 @@ public class ProductController {
         CartItem validateCartItem = cartItemRepo.findByUserEmailAndProductId(userEmail, productId);
 
         if (validateCartItem != null) {
+            System.out.println(true);
             return true;
         } else {
+            System.out.println(false);
             return false;
         }
 

@@ -13,6 +13,7 @@ import ProductAdd from './admin/products/ProductAdd'
 import ProductEdit from './admin/products/ProductEdit'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Page from './user/Page';
+import Cart from './user/Cart';
 import Product from './user/Product';
 import { Categories } from './util/Categories';
 import { oktaConfig } from './lib/oktaConfig';
@@ -49,6 +50,8 @@ export const App = () => {
               <div className="col-10">
                 <Routes>
                   <Route path="/" element={<Page />} />
+
+                  <Route path="/cart/:productId" element={<Cart />} />
 
                   <Route path="/admin/pages" element={<PageIndex />} />
                   <Route path="/admin/pages/add" element={<PageAdd />} />
