@@ -30,5 +30,11 @@ public class CartItem {
 
     @Column
     private Long productId;
+
+    public CartItem(String userEmail, int quantity, Long productId) {
+        this.userEmail = userEmail;
+        this.quantity = quantity;
+        this.productId = productId;
+    }
     
 }

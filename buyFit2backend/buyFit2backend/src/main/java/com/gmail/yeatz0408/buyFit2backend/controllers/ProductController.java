@@ -1,11 +1,14 @@
 package com.gmail.yeatz0408.buyFit2Backend.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,11 +67,7 @@ public class ProductController {
     @GetMapping("/isaddedtocart/{productId}")
     public Boolean isaddedtocart(@RequestHeader(value = "Authorization") String token, @PathVariable Long productId) {
 
-        System.out.println(token);
-
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
-
-        System.out.println(userEmail);
 
         CartItem validateCartItem = cartItemRepo.findByUserEmailAndProductId(userEmail, productId);
 
@@ -79,7 +78,24 @@ public class ProductController {
             System.out.println(false);
             return false;
         }
+    }
+
+    @PutMapping("/addtocart/{productId}")
+    public void addToCart(@RequestHeader(value = "Authorization") String token, @PathVariable Long productId) {
+
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+
+        Optional<Product> product = productRepo.findById(productId);
+
+        CartItem validateCartItem = cartItemRepo.findByUserEmailAndProductId(userEmail, productId);
+
+        if (validateCartItem == null) {
+            CartItem cartItem = new CartItem(userEmail, 1, productId);
+            cartItemRepo.save(cartItem);
+        } else {
+            validateCartItem.setQuantity(validateCartItem.getQuantity()+1);
+            cartItemRepo.save(validateCartItem);
+        }
 
     }
-    
 }

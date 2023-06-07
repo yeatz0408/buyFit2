@@ -9,7 +9,7 @@ export default function Cart() {
 
     const [ isAddedToCart, setIsAddedToCart ] = useState(false);
 
-    console.log("Entered Cart")
+    
 
     useEffect(() => {
         const isAdded = async () => {
@@ -23,13 +23,11 @@ export default function Cart() {
                     }
                 };
                 const fetched = await fetch(url, requestOptions);
-                console.log(fetched);
                 if (!fetched.ok) {
                     throw new Error('エラーが発生しました。')
                 }
                 const fetchedJson = await fetched.json();
                 setIsAddedToCart(fetchedJson);
-                console.log(fetchedJson);
             }
         }
 
@@ -39,12 +37,9 @@ export default function Cart() {
 
     }, [authState, productId])
 
-
-
   return (
     <div className="container mt-5">
         <h1 className="display-2">{isAddedToCart}</h1>
     </div>
-
   )
 }
