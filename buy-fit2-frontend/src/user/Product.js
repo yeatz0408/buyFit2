@@ -5,11 +5,13 @@ import axios from 'axios';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Pagination } from '../util/Pagination';
 import DOMPurify from 'dompurify';
+import { useOktaAuth } from "@okta/okta-react";
 
 export default function Product() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber - 1);
     let perPage = 6;
+    const { authState } = useOktaAuth();
     const { slug } = useParams();
 
     // data from database
@@ -50,6 +52,21 @@ export default function Product() {
         console.log(tempLoadedCats);
     };
 
+    async function addToCart(id) {
+        const url = `http://localhost:8080/products/addtocart/${id}`;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        const checkoutResponse = await fetch(url, requestOptions);
+
+        console.log(checkoutResponse);
+
+    }
+
     useEffect(() => {
         loadProducts();
         loadCats();
@@ -82,7 +99,7 @@ export default function Product() {
                                 <p>{product.price}円</p>
                                 <div style={{ position: "relative" }}>
                                     <p>
-                                        <a class="btn btn-primary addToCart">カートに入れる</a>
+                                        <button onClick={() => addToCart(product.id)} class="btn btn-primary addToCart">カートに入れる</button>
                                     </p>
                                     {/* <div class="btn btn-sm btn-success productAdded">カートに入れました。</div> */}
                                 </div>

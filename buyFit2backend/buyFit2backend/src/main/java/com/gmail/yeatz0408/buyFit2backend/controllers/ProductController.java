@@ -83,7 +83,7 @@ public class ProductController {
     @PutMapping("/addtocart/{productId}")
     public void addToCart(@RequestHeader(value = "Authorization") String token, @PathVariable Long productId) {
 
-        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"").toLowerCase();
 
         Optional<Product> product = productRepo.findById(productId);
 
