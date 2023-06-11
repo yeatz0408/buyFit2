@@ -17,6 +17,19 @@
   }
 }
 
+.fade-out {
+  animation: fadeOut 3s;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

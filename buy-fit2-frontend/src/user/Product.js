@@ -22,6 +22,9 @@ export default function Product() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
+    const [showAddedMessage, setShowAddedMessage] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
     const loadProducts = async () => {
 
         const baseUrl = "http://localhost:8080/products";
@@ -52,8 +55,8 @@ export default function Product() {
         console.log(tempLoadedCats);
     };
 
-    async function addToCart(id) {
-        const url = `http://localhost:8080/products/addtocart/${id}`;
+    async function addToCart(product) {
+        const url = `http://localhost:8080/products/addtocart/${product.id}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
@@ -63,8 +66,13 @@ export default function Product() {
         };
         const checkoutResponse = await fetch(url, requestOptions);
 
-        console.log(checkoutResponse);
+        setSelectedProduct(product);
+        setShowAddedMessage(true);
 
+        setTimeout(() => {
+            setSelectedProduct(null);
+            setShowAddedMessage(false);
+        }, 3000);
     }
 
     useEffect(() => {
@@ -97,13 +105,17 @@ export default function Product() {
                                 <h4 >{product.productName}</h4>
                                 <div className="desc" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></div>
                                 <p>{product.price}円</p>
-                                <div style={{ position: "relative" }}>
+                                <div style={{ position: "relative"}}>
                                     <p>
-                                        <button onClick={() => addToCart(product.id)} class="btn btn-primary addToCart">カートに入れる</button>
+                                        <button onClick={() => addToCart(product)} class="btn btn-primary addToCart">カートに入れる</button>
                                     </p>
-                                    {/* <div class="btn btn-sm btn-success productAdded">カートに入れました。</div> */}
+                                    {selectedProduct === product && showAddedMessage ? (
+                                        <div className="btn btn-sm btn-success fade-out"
+                                            onAnimationEnd={() => setShowAddedMessage(false)}>
+                                                カートに入れました。</div>
+                                    ) : <div style={{ height: "40px" }}></div>}
                                 </div>
-                                <br></br>
+                                
                             </div>
                         ))
                         }
