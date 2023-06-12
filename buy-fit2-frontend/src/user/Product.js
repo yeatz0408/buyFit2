@@ -9,11 +9,6 @@ import { useOktaAuth } from "@okta/okta-react";
 
 export default function Product() {
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber - 1);
-    let perPage = 6;
-    const { authState } = useOktaAuth();
-    const { slug } = useParams();
-
     // data from database
     const [products, setProducts] = useState([]);
     const [loadedCats, setLoadedCats] = useState([]);
@@ -24,6 +19,11 @@ export default function Product() {
 
     const [showAddedMessage, setShowAddedMessage] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber - 1);
+    let perPage = 6;
+    const { authState } = useOktaAuth();
+    const { slug } = useParams();
 
     const loadProducts = async () => {
 
@@ -79,6 +79,10 @@ export default function Product() {
         loadProducts();
         loadCats();
     }, [currentPage, slug]);
+
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [slug])
 
     return (
         <div class="container-fluid mt-5">
