@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import axios from 'axios';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -105,17 +105,27 @@ export default function Product() {
                                 <h4 >{product.productName}</h4>
                                 <div className="desc" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}></div>
                                 <p>{product.price}円</p>
-                                <div style={{ position: "relative"}}>
-                                    <p>
-                                        <button onClick={() => addToCart(product)} class="btn btn-primary addToCart">カートに入れる</button>
-                                    </p>
+                                <div style={{ position: "relative" }}>
+
+                                    {
+                                        authState.isAuthenticated ?
+                                            <p>
+                                                <button onClick={() => addToCart(product)} class="btn btn-primary addToCart">カートに入れる</button>
+                                            </p>
+                                            :
+                                            <p>
+                                                <NavLink className="btn btn-primary addToCart" to="/login">カートに入れる</NavLink>
+                                            </p>
+
+                                    }
+
                                     {selectedProduct === product && showAddedMessage ? (
                                         <div className="btn btn-sm btn-success fade-out"
                                             onAnimationEnd={() => setShowAddedMessage(false)}>
-                                                カートに入れました。</div>
+                                            カートに入れました。</div>
                                     ) : <div style={{ height: "40px" }}></div>}
                                 </div>
-                                
+
                             </div>
                         ))
                         }
